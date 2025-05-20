@@ -1,12 +1,14 @@
-import 'package:cineverse/Screens/slpash_screen.dart';
+import 'package:cineverse/Providers/movies_provider.dart';
+import 'package:cineverse/Services/movies_api_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'theme/app_theme.dart';
+import 'screens/splash_screen.dart';
 import 'screens/home_screen.dart';
 import 'providers/theme_provider.dart';
+import 'theme/app_theme.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -23,9 +25,18 @@ void main() async {
   // Initialize Google Fonts
   GoogleFonts.poppins();
 
+  // Get API key from .env
+  final movieApiService = MovieApiService();
+
   runApp(
-    ChangeNotifierProvider(
-      create: (_) => ThemeProvider(),
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => ThemeProvider()),
+        Provider<MovieApiService>.value(value: movieApiService),
+        ChangeNotifierProvider(
+          create: (_) => MovieProvider(apiService: movieApiService),
+        ),
+      ],
       child: const MyApp(),
     ),
   );

@@ -17,7 +17,7 @@ class AppTheme {
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
           elevation: 0,
-          padding: EdgeInsets.symmetric(
+          padding: const EdgeInsets.symmetric(
             horizontal: AppDimensions.horizontalPadding,
             vertical: AppDimensions.verticalPadding,
           ),
@@ -31,7 +31,10 @@ class AppTheme {
       // Input decoration
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
-        fillColor: AppColors.lightColorScheme.surfaceVariant.withOpacity(0.5),
+        // ignore: deprecated_member_use
+        fillColor:
+            // ignore: deprecated_member_use
+            AppColors.lightColorScheme.surfaceContainerHighest.withOpacity(0.5),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(AppDimensions.borderRadius),
           borderSide: BorderSide.none,
@@ -47,7 +50,7 @@ class AppTheme {
             width: 2,
           ),
         ),
-        contentPadding: EdgeInsets.all(AppDimensions.contentPadding),
+        contentPadding: const EdgeInsets.all(AppDimensions.contentPadding),
       ),
 
       // Card theme
@@ -78,7 +81,7 @@ class AppTheme {
       ),
 
       // Scaffold background color
-      scaffoldBackgroundColor: AppColors.lightColorScheme.background,
+      scaffoldBackgroundColor: AppColors.lightColorScheme.surface,
     );
   }
 
@@ -108,7 +111,10 @@ class AppTheme {
       // Input decoration
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
-        fillColor: AppColors.darkColorScheme.surfaceVariant.withOpacity(0.3),
+        // ignore: deprecated_member_use
+        fillColor:
+            // ignore: deprecated_member_use
+            AppColors.darkColorScheme.surfaceContainerHighest.withOpacity(0.3),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(AppDimensions.borderRadius),
           borderSide: BorderSide.none,
@@ -124,7 +130,7 @@ class AppTheme {
             width: 2,
           ),
         ),
-        contentPadding: EdgeInsets.all(AppDimensions.contentPadding),
+        contentPadding: const EdgeInsets.all(AppDimensions.contentPadding),
       ),
 
       // Card theme
@@ -155,7 +161,7 @@ class AppTheme {
       ),
 
       // Scaffold background color
-      scaffoldBackgroundColor: AppColors.darkColorScheme.background,
+      scaffoldBackgroundColor: AppColors.darkColorScheme.surface,
     );
   }
 }

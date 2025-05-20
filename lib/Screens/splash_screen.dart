@@ -5,6 +5,7 @@ class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
 
   @override
+  // ignore: library_private_types_in_public_api
   _SplashScreenState createState() => _SplashScreenState();
 }
 
@@ -128,6 +129,7 @@ class _SplashScreenState extends State<SplashScreen>
                         Text(
                           'Find your favorite movie',
                           style: TextStyle(
+                            // ignore: deprecated_member_use
                             color: Colors.white.withOpacity(0.7),
                             fontSize: 16,
                           ),
