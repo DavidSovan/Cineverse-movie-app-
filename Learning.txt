@@ -1,0 +1,2 @@
+To use your API key in your code, you can access it like this:
+final apiKey = dotenv.env['API_KEY'];
