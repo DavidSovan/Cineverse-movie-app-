@@ -30,4 +30,6 @@ class MovieProvider extends ChangeNotifier {
       notifyListeners();
     }
   }
+
+  void fetchMovieDetails(int movieId) {}
 }

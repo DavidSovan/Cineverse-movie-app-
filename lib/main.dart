@@ -1,5 +1,8 @@
+import 'package:cineverse/Providers/detail_movies_provider.dart';
 import 'package:cineverse/Providers/movies_provider.dart';
+import 'package:cineverse/Providers/search_movies_provider.dart';
 import 'package:cineverse/Services/movies_api_service.dart';
+import 'package:cineverse/Services/search_movie_api_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -32,9 +35,20 @@ void main() async {
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => ThemeProvider()),
+        // Provide the MovieApiService instance
         Provider<MovieApiService>.value(value: movieApiService),
         ChangeNotifierProvider(
           create: (_) => MovieProvider(apiService: movieApiService),
+        ),
+        // Provide the DetailMoviesProvider with the same MovieApiService instance
+        ChangeNotifierProvider(
+          create: (_) => DetailMoviesProvider(movieService: movieApiService),
+        ),
+        //SearchMoviesProvider
+        Provider<SearchMovieApiService>.value(value: SearchMovieApiService()),
+        ChangeNotifierProvider(
+          create: (_) =>
+              SearchMoviesProvider(movieService: SearchMovieApiService()),
         ),
       ],
       child: const MyApp(),

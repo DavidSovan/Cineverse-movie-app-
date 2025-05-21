@@ -6,6 +6,7 @@ class Movie {
   final String backdropPath;
   final double voteAverage;
   final String releaseDate;
+  final bool adult;
 
   Movie({
     required this.id,
@@ -15,6 +16,7 @@ class Movie {
     required this.backdropPath,
     required this.voteAverage,
     required this.releaseDate,
+    required this.adult,
   });
 
   factory Movie.fromJson(Map<String, dynamic> json) {
@@ -26,6 +28,7 @@ class Movie {
       backdropPath: json['backdrop_path'] ?? '',
       voteAverage: (json['vote_average'] as num).toDouble(),
       releaseDate: json['release_date'],
+      adult: json['adult'],
     );
   }
 }

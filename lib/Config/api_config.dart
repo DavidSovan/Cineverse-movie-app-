@@ -9,9 +9,10 @@ class ApiConfig {
   static const String imageBaseUrl = 'https://image.tmdb.org/t/p';
   static const String posterImageUrl = '$imageBaseUrl/w500';
   static const String backdropImageUrl = '$imageBaseUrl/w780';
-
   // API Endpoints
   static const String popularMovies = '/movie/popular';
+  static const String movieDetails = '/movie/';
+  static const String searchMovies = '/search/movie';
 
   // Placeholder Image
   static const String placeholderImage =
