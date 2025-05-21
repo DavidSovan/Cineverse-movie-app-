@@ -1,4 +1,5 @@
 import 'package:cineverse/Providers/detail_movies_provider.dart';
+import 'package:cineverse/Providers/genre_provider.dart';
 import 'package:cineverse/Providers/movies_provider.dart';
 import 'package:cineverse/Providers/search_movies_provider.dart';
 import 'package:cineverse/Services/movies_api_service.dart';
@@ -50,6 +51,8 @@ void main() async {
           create: (_) =>
               SearchMoviesProvider(movieService: SearchMovieApiService()),
         ),
+        // GenreProvider
+        ChangeNotifierProvider(create: (_) => GenreProvider()),
       ],
       child: const MyApp(),
     ),

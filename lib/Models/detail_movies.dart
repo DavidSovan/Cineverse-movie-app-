@@ -1,4 +1,5 @@
 import 'package:cineverse/Models/movies.dart';
+import 'package:cineverse/Models/genre.dart';
 
 class DetailedMovie extends Movie {
   final List<Genre>? genres;
@@ -63,18 +64,4 @@ class DetailedMovie extends Movie {
   }
 
   bool get hasFullDetails => genres != null;
-}
-
-class Genre {
-  final int id;
-  final String name;
-
-  Genre({required this.id, required this.name});
-
-  factory Genre.fromJson(Map<String, dynamic> json) {
-    return Genre(
-      id: json['id'],
-      name: json['name'],
-    );
-  }
 }
