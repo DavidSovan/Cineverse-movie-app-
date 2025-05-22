@@ -15,6 +15,7 @@ class ApiConfig {
   static const String searchMovies = '/search/movie';
   static const String genreList = '/genre/movie/list';
   static const String discoverMovies = '/discover/movie';
+  static const String upcomingMovies = '/movie/upcoming';
 
   // Placeholder Image
   static const String placeholderImage =

@@ -29,7 +29,7 @@ class GenreApiService {
   Future<Map<String, dynamic>> fetchMoviesByGenre(int? genreId,
       {int page = 1}) async {
     final url =
-        '${ApiConfig.baseUrl}${ApiConfig.discoverMovies}api_key=${ApiConfig.apiKey}&page=$page${genreId != null ? '&with_genres=$genreId' : ''}';
+        '${ApiConfig.baseUrl}${ApiConfig.discoverMovies}?api_key=${ApiConfig.apiKey}&page=$page${genreId != null ? '&with_genres=$genreId' : ''}';
 
     try {
       final response = await http.get(Uri.parse(url));
