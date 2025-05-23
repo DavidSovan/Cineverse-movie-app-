@@ -1,6 +1,7 @@
 import 'package:cineverse/Models/movies.dart';
 import 'package:cineverse/Screens/movie_detail_screen.dart';
-import 'package:cineverse/Screens/search_movies_screen.dart';
+import 'package:cineverse/Widgets/home_app_bar.dart';
+import 'package:cineverse/Widgets/home_drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:cineverse/Providers/movies_provider.dart';
@@ -10,6 +11,7 @@ import 'package:cineverse/Widgets/animated_movie_card.dart';
 import 'package:cineverse/Widgets/movie_shimmer_loading.dart';
 import 'package:cineverse/Theme/text_styles.dart';
 import 'package:cineverse/Theme/colors.dart';
+import 'package:cineverse/Widgets/upcoming_movies_section.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -26,6 +28,7 @@ class _HomeScreenState extends State<HomeScreen> {
     Future.microtask(() {
       // ignore: use_build_context_synchronously
       context.read<MovieProvider>().fetchPopularMovies();
+      // ignore: use_build_context_synchronously
       context.read<GenreProvider>().fetchGenres();
     });
   }
@@ -45,85 +48,8 @@ class _HomeScreenState extends State<HomeScreen> {
     final apiService = Provider.of<MovieApiService>(context, listen: false);
 
     return Scaffold(
-      drawer: Drawer(
-        child: Consumer<GenreProvider>(
-          builder: (context, genreProvider, child) {
-            return ListView(
-              padding: EdgeInsets.only(
-                top: MediaQuery.of(context).size.height * 0.25,
-              ),
-              children: [
-                ExpansionTile(
-                  title: const Text('Genres'),
-                  initiallyExpanded: true,
-                  children: [
-                    ListTile(
-                      title: const Text('All Movies'),
-                      selected: genreProvider.selectedGenre == null,
-                      onTap: () {
-                        genreProvider.clearGenreSelection();
-                        context.read<MovieProvider>().fetchPopularMovies();
-                        Navigator.pop(context);
-                      },
-                    ),
-                    if (genreProvider.isLoading)
-                      const Center(child: CircularProgressIndicator())
-                    else if (genreProvider.errorMessage != null)
-                      ListTile(
-                        title: Text('Error: ${genreProvider.errorMessage}'),
-                        textColor: Colors.red,
-                      )
-                    else
-                      ...genreProvider.genres.map((genre) => ListTile(
-                            title: Text(genre.name),
-                            selected:
-                                genreProvider.selectedGenre?.id == genre.id,
-                            onTap: () {
-                              genreProvider.fetchMoviesByGenre(genre.id);
-                              Navigator.pop(context);
-                            },
-                          )),
-                  ],
-                ),
-              ],
-            );
-          },
-        ),
-      ),
-      appBar: AppBar(
-        title: Text(
-          'Cineverse',
-          style: AppTextStyles.textTheme.headlineMedium?.copyWith(
-            color: Colors.white,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.search, color: Colors.white),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const SearchScreen(),
-                ),
-              );
-            },
-          ),
-        ],
-        flexibleSpace: Container(
-          decoration: const BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: [
-                AppColors.primaryRed,
-                AppColors.darkRed,
-              ],
-            ),
-          ),
-        ),
-      ),
+      drawer: const HomeDrawer(),
+      appBar: const HomeAppBar(),
       body: SingleChildScrollView(
         child: _buildBody(movieProvider, apiService),
       ),
@@ -223,6 +149,9 @@ class _HomeScreenState extends State<HomeScreen> {
               );
             },
           ),
+
+          // Upcoming Movies Section
+          const UpcomingMoviesSection(),
 
           // Load More Button
           if (genreProvider.selectedGenre != null &&
