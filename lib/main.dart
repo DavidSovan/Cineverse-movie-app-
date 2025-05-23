@@ -3,6 +3,7 @@ import 'package:cineverse/Providers/genre_provider.dart';
 import 'package:cineverse/Providers/movies_provider.dart';
 import 'package:cineverse/Providers/search_movies_provider.dart';
 import 'package:cineverse/Providers/upcoming_movies_provider.dart';
+import 'package:cineverse/Providers/videos_movies_provider.dart';
 import 'package:cineverse/Services/movies_api_service.dart';
 import 'package:cineverse/Services/search_movie_api_service.dart';
 import 'package:flutter/material.dart';
@@ -56,6 +57,10 @@ void main() async {
         ChangeNotifierProvider(create: (_) => GenreProvider()),
         // upcoming movies provider
         ChangeNotifierProvider(create: (_) => UpcomingMoviesProvider()),
+        // VideosMoviesProvider
+        ChangeNotifierProvider(
+          create: (_) => MovieVideosProvider(),
+        ),
       ],
       child: const MyApp(),
     ),

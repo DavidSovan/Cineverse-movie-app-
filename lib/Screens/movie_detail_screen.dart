@@ -1,3 +1,4 @@
+import 'package:cineverse/Widgets/movie_videos_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -246,7 +247,16 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen>
                                     );
                                   }).toList(),
                                 ),
+                                const SizedBox(height: 24),
                               ],
+                              MovieVideosWidget(
+                                movieId: widget.movieId,
+                                title: 'Official Trailers',
+                                padding: EdgeInsets.zero,
+                                maxVideos: 3, // Show max 3 trailers
+                                // trailersOnly: true, // This is default, so you don't need to specify
+                              ),
+                              const SizedBox(height: 24),
                               if (movie.budget != null &&
                                   movie.budget! > 0) ...[
                                 const SizedBox(height: 16),
