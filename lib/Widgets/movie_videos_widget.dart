@@ -1,5 +1,5 @@
-import 'package:cineverse/Models/video_movies.dart';
-import 'package:cineverse/Providers/videos_movies_provider.dart';
+import 'package:cineverse/models/video_movies.dart';
+import 'package:cineverse/providers/videos_movies_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -49,14 +49,14 @@ class _MovieVideosWidgetState extends State<MovieVideosWidget> {
               widget.title ?? 'Trailers & Videos',
               style: Theme.of(context).textTheme.headlineSmall,
             ),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
           ],
           Consumer<MovieVideosProvider>(
             builder: (context, movieVideosProvider, child) {
               if (movieVideosProvider.isLoading) {
-                return Center(
+                return const Center(
                   child: Padding(
-                    padding: const EdgeInsets.all(20.0),
+                    padding: EdgeInsets.all(20.0),
                     child: CircularProgressIndicator(),
                   ),
                 );
@@ -78,7 +78,7 @@ class _MovieVideosWidgetState extends State<MovieVideosWidget> {
 
   Widget _buildErrorWidget(String errorMessage) {
     return Container(
-      padding: EdgeInsets.all(16.0),
+      padding: const EdgeInsets.all(16.0),
       decoration: BoxDecoration(
         color: Colors.red.shade50,
         borderRadius: BorderRadius.circular(8.0),
@@ -87,7 +87,7 @@ class _MovieVideosWidgetState extends State<MovieVideosWidget> {
       child: Row(
         children: [
           Icon(Icons.error_outline, color: Colors.red.shade600),
-          SizedBox(width: 8.0),
+          const SizedBox(width: 8.0),
           Expanded(
             child: Text(
               'Error loading videos: $errorMessage',
@@ -101,7 +101,7 @@ class _MovieVideosWidgetState extends State<MovieVideosWidget> {
 
   Widget _buildNoVideosWidget() {
     return Container(
-      padding: EdgeInsets.all(16.0),
+      padding: const EdgeInsets.all(16.0),
       decoration: BoxDecoration(
         color: Colors.grey.shade50,
         borderRadius: BorderRadius.circular(8.0),
@@ -110,7 +110,7 @@ class _MovieVideosWidgetState extends State<MovieVideosWidget> {
       child: Row(
         children: [
           Icon(Icons.video_library_outlined, color: Colors.grey.shade600),
-          SizedBox(width: 8.0),
+          const SizedBox(width: 8.0),
           Text(
             'No videos available',
             style: TextStyle(color: Colors.grey.shade700),
@@ -145,7 +145,7 @@ class _MovieVideosWidgetState extends State<MovieVideosWidget> {
 
     return ListView.builder(
       shrinkWrap: true,
-      physics: NeverScrollableScrollPhysics(),
+      physics: const NeverScrollableScrollPhysics(),
       itemCount: displayVideos.length,
       itemBuilder: (context, index) {
         final video = displayVideos[index];
@@ -156,11 +156,11 @@ class _MovieVideosWidgetState extends State<MovieVideosWidget> {
 
   Widget _buildVideoCard(Video video) {
     return Card(
-      margin: EdgeInsets.symmetric(vertical: 4.0),
+      margin: const EdgeInsets.symmetric(vertical: 4.0),
       elevation: 2.0,
       child: ListTile(
         leading: Container(
-          padding: EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(8.0),
           decoration: BoxDecoration(
             color: Colors.red.shade50,
             borderRadius: BorderRadius.circular(8.0),
@@ -173,7 +173,7 @@ class _MovieVideosWidgetState extends State<MovieVideosWidget> {
         ),
         title: Text(
           video.name,
-          style: TextStyle(
+          style: const TextStyle(
             fontWeight: FontWeight.w500,
             fontSize: 14.0,
           ),

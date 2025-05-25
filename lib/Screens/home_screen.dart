@@ -1,17 +1,17 @@
-import 'package:cineverse/Models/movies.dart';
-import 'package:cineverse/Screens/movie_detail_screen.dart';
-import 'package:cineverse/Widgets/home_app_bar.dart';
-import 'package:cineverse/Widgets/home_drawer.dart';
+import 'package:cineverse/models/movies.dart';
+import 'package:cineverse/screens/movie_detail_screen.dart';
+import 'package:cineverse/widgets/home_app_bar.dart';
+import 'package:cineverse/widgets/home_drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:cineverse/Providers/movies_provider.dart';
-import 'package:cineverse/Providers/genre_provider.dart';
-import 'package:cineverse/Services/movies_api_service.dart';
-import 'package:cineverse/Widgets/animated_movie_card.dart';
-import 'package:cineverse/Widgets/movie_shimmer_loading.dart';
-import 'package:cineverse/Theme/text_styles.dart';
-import 'package:cineverse/Theme/colors.dart';
-import 'package:cineverse/Widgets/upcoming_movies_section.dart';
+import 'package:cineverse/providers/movies_provider.dart';
+import 'package:cineverse/providers/genre_provider.dart';
+import 'package:cineverse/services/movies_api_service.dart';
+import 'package:cineverse/widgets/animated_movie_card.dart';
+import 'package:cineverse/widgets/movie_shimmer_loading.dart';
+import 'package:cineverse/theme/text_styles.dart';
+import 'package:cineverse/theme/colors.dart';
+import 'package:cineverse/widgets/upcoming_movies_section.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);

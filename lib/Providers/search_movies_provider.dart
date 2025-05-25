@@ -1,5 +1,5 @@
-import 'package:cineverse/Models/movies.dart';
-import 'package:cineverse/Services/search_movie_api_service.dart';
+import 'package:cineverse/models/movies.dart';
+import 'package:cineverse/services/search_movie_api_service.dart';
 import 'package:flutter/foundation.dart';
 
 class SearchMoviesProvider with ChangeNotifier {

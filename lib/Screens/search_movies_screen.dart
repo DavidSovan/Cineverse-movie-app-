@@ -1,11 +1,11 @@
 import 'dart:async';
-import 'package:cineverse/Providers/search_movies_provider.dart';
-import 'package:cineverse/Screens/movie_detail_screen.dart';
-import 'package:cineverse/Services/movies_api_service.dart';
-import 'package:cineverse/Widgets/movies_list.dart';
+import 'package:cineverse/providers/search_movies_provider.dart';
+import 'package:cineverse/screens/movie_detail_screen.dart';
+import 'package:cineverse/services/movies_api_service.dart';
+import 'package:cineverse/widgets/movies_list.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:cineverse/Theme/colors.dart';
+import 'package:cineverse/theme/colors.dart';
 
 class SearchScreen extends StatefulWidget {
   const SearchScreen({Key? key}) : super(key: key);

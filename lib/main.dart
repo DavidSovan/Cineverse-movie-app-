@@ -1,11 +1,12 @@
-import 'package:cineverse/Providers/detail_movies_provider.dart';
-import 'package:cineverse/Providers/genre_provider.dart';
-import 'package:cineverse/Providers/movies_provider.dart';
-import 'package:cineverse/Providers/search_movies_provider.dart';
-import 'package:cineverse/Providers/upcoming_movies_provider.dart';
-import 'package:cineverse/Providers/videos_movies_provider.dart';
-import 'package:cineverse/Services/movies_api_service.dart';
-import 'package:cineverse/Services/search_movie_api_service.dart';
+import 'package:cineverse/providers/detail_movies_provider.dart';
+import 'package:cineverse/providers/genre_provider.dart';
+import 'package:cineverse/providers/movie_credits_provider.dart';
+import 'package:cineverse/providers/movies_provider.dart';
+import 'package:cineverse/providers/search_movies_provider.dart';
+import 'package:cineverse/providers/upcoming_movies_provider.dart';
+import 'package:cineverse/providers/videos_movies_provider.dart';
+import 'package:cineverse/services/movies_api_service.dart';
+import 'package:cineverse/services/search_movie_api_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -61,6 +62,8 @@ void main() async {
         ChangeNotifierProvider(
           create: (_) => MovieVideosProvider(),
         ),
+        // MovieCreditsProvider
+        ChangeNotifierProvider(create: (_) => MovieCreditsProvider()),
       ],
       child: const MyApp(),
     ),

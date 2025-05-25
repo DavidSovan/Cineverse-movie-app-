@@ -1,6 +1,6 @@
 import 'dart:convert';
-import 'package:cineverse/Config/api_config.dart';
-import 'package:cineverse/Models/upcoming_movie.dart';
+import 'package:cineverse/config/api_config.dart';
+import 'package:cineverse/models/upcoming_movie.dart';
 import 'package:http/http.dart' as http;
 
 class UpcomingMovieApiServie {

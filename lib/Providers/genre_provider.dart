@@ -1,6 +1,6 @@
-import 'package:cineverse/Models/movies.dart';
+import 'package:cineverse/models/movies.dart';
 import 'package:flutter/material.dart';
-import '../Models/genre.dart';
+import '../models/genre.dart';
 import '../services/genre_api_service.dart';
 
 class GenreProvider with ChangeNotifier {

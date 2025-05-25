@@ -1,9 +1,9 @@
-import 'package:cineverse/Providers/upcoming_movies_provider.dart';
+import 'package:cineverse/providers/upcoming_movies_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:cineverse/Theme/text_styles.dart';
-import 'package:cineverse/Services/movies_api_service.dart';
-import 'package:cineverse/Screens/movie_detail_screen.dart';
+import 'package:cineverse/theme/text_styles.dart';
+import 'package:cineverse/services/movies_api_service.dart';
+import 'package:cineverse/screens/movie_detail_screen.dart';
 
 class UpcomingMoviesSection extends StatelessWidget {
   const UpcomingMoviesSection({Key? key}) : super(key: key);

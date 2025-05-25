@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'package:cineverse/Config/api_config.dart';
+import 'package:cineverse/config/api_config.dart';
 import 'package:http/http.dart' as http;
 import '../models/movie_response.dart';
 

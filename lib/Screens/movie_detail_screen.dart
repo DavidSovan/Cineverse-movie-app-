@@ -1,12 +1,14 @@
-import 'package:cineverse/Widgets/movie_videos_widget.dart';
+import 'package:cineverse/providers/movie_credits_provider.dart';
+import 'package:cineverse/widgets/movie_credit_widget.dart';
+import 'package:cineverse/widgets/movie_videos_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:cineverse/Providers/detail_movies_provider.dart';
-import 'package:cineverse/Services/movies_api_service.dart';
-import 'package:cineverse/Theme/colors.dart';
-import 'package:cineverse/Theme/text_styles.dart';
-import 'package:cineverse/Theme/demensions.dart';
+import 'package:cineverse/providers/detail_movies_provider.dart';
+import 'package:cineverse/services/movies_api_service.dart';
+import 'package:cineverse/theme/colors.dart';
+import 'package:cineverse/theme/text_styles.dart';
+import 'package:cineverse/theme/demensions.dart';
 
 class MovieDetailsScreen extends StatefulWidget {
   final int movieId;
@@ -249,13 +251,35 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen>
                                 ),
                                 const SizedBox(height: 24),
                               ],
+                              /////////////////
+                              //Movie Videos//
+                              ////////////////
                               MovieVideosWidget(
                                 movieId: widget.movieId,
                                 title: 'Official Trailers',
                                 padding: EdgeInsets.zero,
-                                maxVideos: 3, // Show max 3 trailers
-                                // trailersOnly: true, // This is default, so you don't need to specify
+                                maxVideos: 3,
                               ),
+
+                              const SizedBox(height: 24),
+
+                              /////////////////
+                              //Movie Credits//
+                              ////////////////
+                              ChangeNotifierProvider(
+                                create: (context) => MovieCreditsProvider(),
+                                child: Container(
+                                  height:
+                                      400, // Fixed height to prevent layout issues
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(12),
+                                    color: Theme.of(context).cardColor,
+                                  ),
+                                  child: MovieCreditsWidget(
+                                      movieId: widget.movieId),
+                                ),
+                              ),
+
                               const SizedBox(height: 24),
                               if (movie.budget != null &&
                                   movie.budget! > 0) ...[

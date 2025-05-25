@@ -1,5 +1,5 @@
-import 'package:cineverse/Models/movies.dart';
-import 'package:cineverse/Widgets/movie_cards.dart';
+import 'package:cineverse/models/movies.dart';
+import 'package:cineverse/widgets/movie_cards.dart';
 import 'package:flutter/material.dart';
 
 class MovieList extends StatelessWidget {

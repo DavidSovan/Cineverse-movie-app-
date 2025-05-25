@@ -1,4 +1,4 @@
-import 'package:cineverse/Models/movies.dart';
+import 'package:cineverse/models/movies.dart';
 
 class MovieResponse {
   final List<Movie> results;

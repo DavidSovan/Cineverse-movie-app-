@@ -1,7 +1,7 @@
 import 'dart:convert';
-import 'package:cineverse/Models/detail_movies.dart';
-import 'package:cineverse/Models/movies.dart';
-import 'package:cineverse/Config/api_config.dart';
+import 'package:cineverse/models/detail_movies.dart';
+import 'package:cineverse/models/movies.dart';
+import 'package:cineverse/config/api_config.dart';
 import 'package:http/http.dart' as http;
 
 class MovieApiService {

@@ -1,5 +1,5 @@
-import 'package:cineverse/Models/movies.dart';
-import 'package:cineverse/Models/genre.dart';
+import 'package:cineverse/models/movies.dart';
+import 'package:cineverse/models/genre.dart';
 
 class DetailedMovie extends Movie {
   final List<Genre>? genres;

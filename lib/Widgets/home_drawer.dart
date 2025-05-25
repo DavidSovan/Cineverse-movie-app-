@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:cineverse/Providers/movies_provider.dart';
-import 'package:cineverse/Providers/genre_provider.dart';
+import 'package:cineverse/providers/movies_provider.dart';
+import 'package:cineverse/providers/genre_provider.dart';
 
 class HomeDrawer extends StatelessWidget {
   const HomeDrawer({Key? key}) : super(key: key);

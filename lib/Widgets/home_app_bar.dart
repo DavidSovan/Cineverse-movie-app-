@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cineverse/Screens/search_movies_screen.dart';
-import 'package:cineverse/Theme/text_styles.dart';
-import 'package:cineverse/Theme/colors.dart';
+import 'package:cineverse/theme/text_styles.dart';
+import 'package:cineverse/theme/colors.dart';
 
 class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
   const HomeAppBar({Key? key}) : super(key: key);

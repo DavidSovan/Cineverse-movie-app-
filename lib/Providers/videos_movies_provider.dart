@@ -1,5 +1,5 @@
-import 'package:cineverse/Models/video_movies.dart';
-import 'package:cineverse/Services/videos_movie_api.dart';
+import 'package:cineverse/models/video_movies.dart';
+import 'package:cineverse/services/videos_movie_api.dart';
 import 'package:flutter/material.dart';
 
 class MovieVideosProvider extends ChangeNotifier {

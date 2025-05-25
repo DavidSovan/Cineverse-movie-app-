@@ -1,5 +1,5 @@
-import 'package:cineverse/Models/movies.dart';
-import 'package:cineverse/Services/upcoming_movie_api_servie.dart';
+import 'package:cineverse/models/movies.dart';
+import 'package:cineverse/services/upcoming_movie_api_servie.dart';
 import 'package:flutter/material.dart';
 
 class UpcomingMoviesProvider with ChangeNotifier {
