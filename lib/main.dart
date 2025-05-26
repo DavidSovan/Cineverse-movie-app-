@@ -3,6 +3,7 @@ import 'package:cineverse/providers/genre_provider.dart';
 import 'package:cineverse/providers/movie_credits_provider.dart';
 import 'package:cineverse/providers/movies_provider.dart';
 import 'package:cineverse/providers/search_movies_provider.dart';
+import 'package:cineverse/providers/similar_movie_provider.dart';
 import 'package:cineverse/providers/upcoming_movies_provider.dart';
 import 'package:cineverse/providers/videos_movies_provider.dart';
 import 'package:cineverse/services/movies_api_service.dart';
@@ -64,6 +65,8 @@ void main() async {
         ),
         // MovieCreditsProvider
         ChangeNotifierProvider(create: (_) => MovieCreditsProvider()),
+        //SimilarMoviesProvider
+        ChangeNotifierProvider(create: (_) => SimilarMoviesProvider()),
       ],
       child: const MyApp(),
     ),

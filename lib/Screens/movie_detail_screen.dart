@@ -1,6 +1,7 @@
 import 'package:cineverse/providers/movie_credits_provider.dart';
 import 'package:cineverse/widgets/movie_credit_widget.dart';
 import 'package:cineverse/widgets/movie_videos_widget.dart';
+import 'package:cineverse/widgets/similar_movies_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -343,6 +344,8 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen>
                                   ),
                                 ),
                               ],
+                              const SizedBox(height: 16),
+                              SimilarMoviesWidget(movieId: widget.movieId),
                             ],
                           ),
                         ),

@@ -18,6 +18,7 @@ class ApiConfig {
   static const String upcomingMovies = '/movie/upcoming';
   static const String movieVideos = '/movie/{movie_id}/videos';
   static const String movieCredits = '/movie/{movie_id}/credits';
+  static const String similarMovies = '/movie/{movie_id}/similar';
 
   // Placeholder Image
   static const String placeholderImage =
