@@ -280,6 +280,16 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen>
                                       movieId: widget.movieId),
                                 ),
                               ),
+                              const SizedBox(height: 24),
+
+                              ///////////////
+                              //Similar Movies//
+                              ///////////////
+                              SimilarMoviesGridWidget(
+                                movieId: widget.movieId,
+                              ),
+
+                              const SizedBox(height: 24),
 
                               const SizedBox(height: 24),
                               if (movie.budget != null &&
@@ -344,8 +354,6 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen>
                                   ),
                                 ),
                               ],
-                              const SizedBox(height: 16),
-                              SimilarMoviesWidget(movieId: widget.movieId),
                             ],
                           ),
                         ),

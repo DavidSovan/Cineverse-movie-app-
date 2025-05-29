@@ -51,7 +51,12 @@ class _HomeScreenState extends State<HomeScreen> {
       drawer: const HomeDrawer(),
       appBar: const HomeAppBar(),
       body: SingleChildScrollView(
-        child: _buildBody(movieProvider, apiService),
+        child: Column(
+          children: [
+            _buildBody(movieProvider, apiService),
+            const UpcomingMoviesSection(),
+          ],
+        ),
       ),
     );
   }
@@ -149,9 +154,6 @@ class _HomeScreenState extends State<HomeScreen> {
               );
             },
           ),
-
-          // Upcoming Movies Section
-          const UpcomingMoviesSection(),
 
           // Load More Button
           if (genreProvider.selectedGenre != null &&

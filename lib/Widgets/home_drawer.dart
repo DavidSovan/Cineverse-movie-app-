@@ -1,3 +1,4 @@
+import 'package:cineverse/screens/genre_selection_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:cineverse/providers/movies_provider.dart';
@@ -64,8 +65,22 @@ class HomeDrawer extends StatelessWidget {
               title: Text(genre.name),
               selected: genreProvider.selectedGenre?.id == genre.id,
               onTap: () {
-                genreProvider.fetchMoviesByGenre(genre.id);
-                Navigator.pop(context);
+                // Remove this line - don't fetch here
+                // genreProvider.fetchMoviesByGenre(genre.id);
+
+                Navigator.pop(context); // Close drawer
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => MoviesByGenreScreen(
+                      genreId: genre.id,
+                      genreName: genre.name,
+                    ),
+                  ),
+                ).then((_) {
+                  // Clear the genre selection when returning from genre screen
+                  genreProvider.clearGenreSelection();
+                });
               },
             ))
         .toList();

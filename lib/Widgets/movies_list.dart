@@ -1,5 +1,5 @@
 import 'package:cineverse/models/movies.dart';
-import 'package:cineverse/widgets/movie_cards.dart';
+import 'package:cineverse/widgets/animated_movie_card.dart';
 import 'package:flutter/material.dart';
 
 class MovieList extends StatelessWidget {
@@ -30,10 +30,11 @@ class MovieList extends StatelessWidget {
           ),
           itemCount: movies.length,
           itemBuilder: (context, index) {
-            return MovieCard(
+            return AnimatedMovieCard(
               movie: movies[index],
               apiService: apiService,
               onTap: onTap,
+              index: index,
             );
           },
         );
