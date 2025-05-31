@@ -24,7 +24,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    // Fetch movies and genres when the home screen loads
+
     Future.microtask(() {
       // ignore: use_build_context_synchronously
       context.read<MovieProvider>().fetchPopularMovies();
@@ -95,7 +95,6 @@ class _HomeScreenState extends State<HomeScreen> {
       );
     }
 
-    // Determine which movies to display
     final movies = genreProvider.selectedGenre != null
         ? genreProvider.movies
         : movieProvider.movies;
@@ -115,7 +114,7 @@ class _HomeScreenState extends State<HomeScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  genreProvider.selectedGenre?.name ?? 'Popular Movies',
+                  genreProvider.selectedGenre?.name ?? 'Trending',
                   style: AppTextStyles.textTheme.titleLarge?.copyWith(
                     fontWeight: FontWeight.bold,
                   ),
@@ -141,7 +140,7 @@ class _HomeScreenState extends State<HomeScreen> {
               crossAxisCount: 2,
               mainAxisSpacing: 16,
               crossAxisSpacing: 16,
-              mainAxisExtent: 260, // Fixed height for each grid item
+              mainAxisExtent: 260,
             ),
             itemCount: movies.length,
             itemBuilder: (context, index) {
@@ -155,7 +154,6 @@ class _HomeScreenState extends State<HomeScreen> {
             },
           ),
 
-          // Load More Button
           if (genreProvider.selectedGenre != null &&
               genreProvider.currentPage < genreProvider.totalPages)
             Padding(
