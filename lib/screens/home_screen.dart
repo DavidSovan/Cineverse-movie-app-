@@ -2,6 +2,7 @@ import 'package:cineverse/models/movies.dart';
 import 'package:cineverse/screens/movie_detail_screen.dart';
 import 'package:cineverse/widgets/home_app_bar.dart';
 import 'package:cineverse/widgets/home_drawer.dart';
+import 'package:cineverse/widgets/popular_tv_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:cineverse/providers/movies_provider.dart';
@@ -55,6 +56,7 @@ class _HomeScreenState extends State<HomeScreen> {
           children: [
             _buildBody(movieProvider, apiService),
             const UpcomingMoviesSection(),
+            const PopularTvWidget(),
           ],
         ),
       ),
