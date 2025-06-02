@@ -24,11 +24,6 @@ class ApiConfig {
   static const String similarMovies = '/movie/{movie_id}/similar';
   // TV Show Endpoints
   static const String popularTvShows = '/tv/popular';
-
-  // Placeholder Image
-  static const String placeholderImage =
-      'https://via.placeholder.com/500x750?text=No+Image';
-
   // Build URL (Popular TV show) with API key
   static String buildUrl(String endpoint, {Map<String, String>? queryParams}) {
     final uri = Uri.parse('$baseUrl$endpoint');
@@ -38,4 +33,12 @@ class ApiConfig {
     };
     return uri.replace(queryParameters: params).toString();
   }
+
+  //tv show details endpoint
+  static String tvShowDetail(int tvId) =>
+      '$baseUrl/tv/$tvId?api_key=$apiKey'; // Build URL for TV show details
+
+  // Placeholder Image
+  static const String placeholderImage =
+      'https://via.placeholder.com/500x750?text=No+Image';
 }

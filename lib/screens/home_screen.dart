@@ -27,10 +27,10 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
 
     Future.microtask(() {
-      // ignore: use_build_context_synchronously
-      context.read<MovieProvider>().fetchPopularMovies();
-      // ignore: use_build_context_synchronously
-      context.read<GenreProvider>().fetchGenres();
+      if (mounted) {
+        context.read<MovieProvider>().fetchPopularMovies();
+        context.read<GenreProvider>().fetchGenres();
+      }
     });
   }
 

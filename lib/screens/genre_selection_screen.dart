@@ -17,11 +17,10 @@ class MoviesByGenreScreen extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  // ignore: library_private_types_in_public_api
-  _MoviesByGenreScreenState createState() => _MoviesByGenreScreenState();
+  MoviesByGenreScreenState createState() => MoviesByGenreScreenState();
 }
 
-class _MoviesByGenreScreenState extends State<MoviesByGenreScreen> {
+class MoviesByGenreScreenState extends State<MoviesByGenreScreen> {
   final ScrollController _scrollController = ScrollController();
 
   @override

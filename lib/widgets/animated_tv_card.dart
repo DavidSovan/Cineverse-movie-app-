@@ -16,11 +16,11 @@ class AnimatedTvCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TweenAnimationBuilder(
-      duration: Duration(milliseconds: 500 + (index * 100)),
+      duration: Duration(milliseconds: 300 + (index * 50)),
       tween: Tween<double>(begin: 0.0, end: 1.0),
       builder: (context, double value, child) {
         return Transform.translate(
-          offset: Offset(0, 50 * (1 - value)),
+          offset: Offset(0, 30 * (1 - value)),
           child: Opacity(
             opacity: value,
             child: child,
@@ -90,8 +90,7 @@ class AnimatedTvCard extends StatelessWidget {
                         vertical: 4,
                       ),
                       decoration: BoxDecoration(
-                        // ignore: deprecated_member_use
-                        color: Colors.black.withOpacity(0.7),
+                        color: Colors.black.withValues(alpha: 0.7),
                         borderRadius: BorderRadius.circular(12),
                       ),
                       child: Row(

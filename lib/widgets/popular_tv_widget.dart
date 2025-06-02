@@ -1,4 +1,5 @@
 import 'package:cineverse/providers/tv_show_provider.dart';
+import 'package:cineverse/screens/tv_show_detail_screen.dart';
 import 'package:cineverse/widgets/animated_tv_card.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -119,12 +120,12 @@ class _PopularTvWidgetState extends State<PopularTvWidget> {
             tvShow: tvShow,
             index: index,
             onTap: (tvShow) {
-              // Handle TV show tap - you can add navigation here
-              print('Tapped on ${tvShow.name}');
-              // Example: Navigate to TV show details
-              // Navigator.push(context, MaterialPageRoute(
-              //   builder: (context) => TvShowDetailScreen(tvShow: tvShow),
-              // ));
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => TvShowDetailScreen(tvId: tvShow.id),
+                ),
+              );
             },
           ),
         );

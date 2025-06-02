@@ -20,11 +20,10 @@ class MovieDetailsScreen extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  // ignore: library_private_types_in_public_api
-  _MovieDetailsScreenState createState() => _MovieDetailsScreenState();
+  MovieDetailsScreenState createState() => MovieDetailsScreenState();
 }
 
-class _MovieDetailsScreenState extends State<MovieDetailsScreen>
+class MovieDetailsScreenState extends State<MovieDetailsScreen>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _fadeAnimation;
@@ -48,10 +47,11 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen>
     ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeOut));
 
     Future.microtask(() {
-      // ignore: use_build_context_synchronously
-      Provider.of<DetailMoviesProvider>(context, listen: false)
-          .fetchMovieDetails(widget.movieId);
-      _controller.forward();
+      if (mounted) {
+        Provider.of<DetailMoviesProvider>(context, listen: false)
+            .fetchMovieDetails(widget.movieId);
+        _controller.forward();
+      }
     });
   }
 
