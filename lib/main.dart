@@ -2,14 +2,13 @@ import 'package:cineverse/providers/detail_movies_provider.dart';
 import 'package:cineverse/providers/genre_provider.dart';
 import 'package:cineverse/providers/movie_credits_provider.dart';
 import 'package:cineverse/providers/movies_provider.dart';
-import 'package:cineverse/providers/search_movies_provider.dart';
+import 'package:cineverse/providers/search_multi_provider.dart';
 import 'package:cineverse/providers/similar_movie_provider.dart';
 import 'package:cineverse/providers/tv_show_detail_provider.dart';
 import 'package:cineverse/providers/tv_show_provider.dart';
 import 'package:cineverse/providers/upcoming_movies_provider.dart';
 import 'package:cineverse/providers/videos_movies_provider.dart';
 import 'package:cineverse/services/movies_api_service.dart';
-import 'package:cineverse/services/search_movie_api_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -22,7 +21,6 @@ import 'theme/app_theme.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
   // Load environment variables
   await dotenv.load(fileName: ".env");
 
@@ -51,12 +49,6 @@ void main() async {
         ChangeNotifierProvider(
           create: (_) => DetailMoviesProvider(movieService: movieApiService),
         ),
-        //SearchMoviesProvider
-        Provider<SearchMovieApiService>.value(value: SearchMovieApiService()),
-        ChangeNotifierProvider(
-          create: (_) =>
-              SearchMoviesProvider(movieService: SearchMovieApiService()),
-        ),
         // GenreProvider
         ChangeNotifierProvider(create: (_) => GenreProvider()),
         // upcoming movies provider
@@ -73,6 +65,8 @@ void main() async {
         ChangeNotifierProvider(create: (context) => TvShowProvider()),
         //tv show detail provider
         ChangeNotifierProvider(create: (_) => TvShowDetailProvider()),
+        //SearchMultiProvider
+        ChangeNotifierProvider(create: (_) => SearchMultiProvider()),
       ],
       child: const MyApp(),
     ),

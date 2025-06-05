@@ -12,10 +12,13 @@ class ApiConfig {
   static const String imageBaseUrl = 'https://image.tmdb.org/t/p';
   static const String posterImageUrl = '$imageBaseUrl/w500';
   static const String backdropImageUrl = '$imageBaseUrl/w780';
-  // API Endpoints
+
+  // Search API Endpoints
+  static const String searchMulti = '/search/multi';
+
+  // Movie API Endpoints
   static const String popularMovies = '/movie/popular';
   static const String movieDetails = '/movie/';
-  static const String searchMovies = '/search/movie';
   static const String genreList = '/genre/movie/list';
   static const String discoverMovies = '/discover/movie';
   static const String upcomingMovies = '/movie/upcoming';

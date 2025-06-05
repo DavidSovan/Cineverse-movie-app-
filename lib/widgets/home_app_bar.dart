@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:cineverse/screens/search_movies_screen.dart';
+import 'package:cineverse/screens/search_multi_screen.dart';
 import 'package:cineverse/theme/text_styles.dart';
 import 'package:cineverse/theme/colors.dart';
 
@@ -41,7 +41,7 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => const SearchScreen(),
+        builder: (context) => const SearchMultiScreen(),
       ),
     );
   }
