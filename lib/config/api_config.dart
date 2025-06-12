@@ -1,7 +1,7 @@
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class ApiConfig {
-  static const String baseUrl = 'https://api.themoviedb.org/3';
+  static String baseUrl = dotenv.env['BASE_URL']!;
   static String apiKey = dotenv.env['API_KEY']!; // API key
   // Headers
   static Map<String, String> get headers => {

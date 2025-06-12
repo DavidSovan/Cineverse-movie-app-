@@ -1,4 +1,5 @@
 import 'package:cineverse/screens/genre_selection_screen.dart';
+import 'package:cineverse/screens/watchlist_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:cineverse/providers/movies_provider.dart';
@@ -17,6 +18,22 @@ class HomeDrawer extends StatelessWidget {
               top: MediaQuery.of(context).size.height * 0.25,
             ),
             children: [
+              // Watchlist item
+              ListTile(
+                leading: const Icon(Icons.bookmark),
+                title: const Text('My Watchlist'),
+                onTap: () {
+                  Navigator.pop(context); // Close drawer
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const WatchlistScreen(),
+                    ),
+                  );
+                },
+              ),
+              const Divider(),
+              // Genres section
               ExpansionTile(
                 title: const Text('Genres'),
                 initiallyExpanded: true,

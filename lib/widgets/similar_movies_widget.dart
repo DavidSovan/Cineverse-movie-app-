@@ -1,4 +1,5 @@
 import 'package:cineverse/models/movies.dart';
+import 'package:cineverse/models/watchlist_item.dart';
 import 'package:cineverse/providers/similar_movie_provider.dart';
 import 'package:cineverse/screens/movie_detail_screen.dart';
 import 'package:cineverse/services/movies_api_service.dart';
@@ -214,7 +215,16 @@ class SimilarMoviesGridWidget extends StatelessWidget {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => MovieDetailsScreen(movieId: movie.id),
+        builder: (context) => MovieDetailsScreen(
+          item: WatchlistItem(
+            id: movie.id,
+            title: movie.title,
+            posterPath: movie.posterPath,
+            mediaType: 'movie',
+            releaseDate: movie.releaseDate,
+          ),
+          movieId: movie.id,
+        ),
       ),
     );
 

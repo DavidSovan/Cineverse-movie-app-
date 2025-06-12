@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:cineverse/theme/text_styles.dart';
 import 'package:cineverse/services/movies_api_service.dart';
 import 'package:cineverse/screens/movie_detail_screen.dart';
+import 'package:cineverse/models/watchlist_item.dart';
 
 class UpcomingMoviesSection extends StatelessWidget {
   const UpcomingMoviesSection({Key? key}) : super(key: key);
@@ -53,8 +54,15 @@ class UpcomingMoviesSection extends StatelessWidget {
                     onTap: () => Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) =>
-                            MovieDetailsScreen(movieId: movie.id),
+                        builder: (context) => MovieDetailsScreen(
+                            item: WatchlistItem(
+                              id: movie.id,
+                              title: movie.title,
+                              posterPath: movie.posterPath,
+                              mediaType: 'movie',
+                              releaseDate: movie.releaseDate,
+                            ),
+                            movieId: movie.id),
                       ),
                     ),
                     child: Container(

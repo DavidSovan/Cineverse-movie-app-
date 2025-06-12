@@ -8,6 +8,7 @@ import 'package:cineverse/providers/tv_show_detail_provider.dart';
 import 'package:cineverse/providers/tv_show_provider.dart';
 import 'package:cineverse/providers/upcoming_movies_provider.dart';
 import 'package:cineverse/providers/videos_movies_provider.dart';
+import 'package:cineverse/providers/watchlist_provider.dart';
 import 'package:cineverse/services/movies_api_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -67,6 +68,8 @@ void main() async {
         ChangeNotifierProvider(create: (_) => TvShowDetailProvider()),
         //SearchMultiProvider
         ChangeNotifierProvider(create: (_) => SearchMultiProvider()),
+        //WatchlistProvider
+        ChangeNotifierProvider(create: (_) => WatchlistProvider()),
       ],
       child: const MyApp(),
     ),

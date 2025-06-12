@@ -1,4 +1,6 @@
+import 'package:cineverse/models/watchlist_item.dart';
 import 'package:cineverse/providers/movie_credits_provider.dart';
+import 'package:cineverse/providers/watchlist_provider.dart';
 import 'package:cineverse/widgets/movie_credit_widget.dart';
 import 'package:cineverse/widgets/movie_videos_widget.dart';
 import 'package:cineverse/widgets/similar_movies_widget.dart';
@@ -13,10 +15,12 @@ import 'package:cineverse/theme/demensions.dart';
 
 class MovieDetailsScreen extends StatefulWidget {
   final int movieId;
+  final WatchlistItem item;
 
   const MovieDetailsScreen({
     Key? key,
     required this.movieId,
+    required this.item,
   }) : super(key: key);
 
   @override
@@ -28,7 +32,6 @@ class MovieDetailsScreenState extends State<MovieDetailsScreen>
   late AnimationController _controller;
   late Animation<double> _fadeAnimation;
   late Animation<Offset> _slideAnimation;
-
   @override
   void initState() {
     super.initState();
@@ -48,8 +51,19 @@ class MovieDetailsScreenState extends State<MovieDetailsScreen>
 
     Future.microtask(() {
       if (mounted) {
+        // Fetch movie details
         Provider.of<DetailMoviesProvider>(context, listen: false)
             .fetchMovieDetails(widget.movieId);
+
+        // Check if item is already in watchlist
+        final watchlistProvider =
+            Provider.of<WatchlistProvider>(context, listen: false);
+        final isInWatchlist = watchlistProvider.isInWatchlist(widget.item.id);
+
+        setState(() {
+          widget.item.isInWatchlist = isInWatchlist;
+        });
+
         _controller.forward();
       }
     });
@@ -59,6 +73,55 @@ class MovieDetailsScreenState extends State<MovieDetailsScreen>
   void dispose() {
     _controller.dispose();
     super.dispose();
+  }
+
+  /// Updated _toggleWatchlistStatus method for your MovieDetailsScreen
+
+  Future<void> _toggleWatchlistStatus() async {
+    final watchlistProvider =
+        Provider.of<WatchlistProvider>(context, listen: false);
+
+    try {
+      if (widget.item.isInWatchlist) {
+        // Remove from watchlist
+        await watchlistProvider.removeFromWatchlist(widget.item.id);
+        setState(() {
+          widget.item.isInWatchlist = false;
+        });
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Removed from Watchlist'),
+              duration: Duration(seconds: 1),
+            ),
+          );
+        }
+      } else {
+        // Add to watchlist
+        await watchlistProvider.addToWatchlist(widget.item);
+        setState(() {
+          widget.item.isInWatchlist = true;
+        });
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Added to Watchlist'),
+              duration: Duration(seconds: 1),
+            ),
+          );
+        }
+      }
+    } catch (e) {
+      // Handle any errors
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error: ${e.toString()}'),
+            duration: const Duration(seconds: 2),
+          ),
+        );
+      }
+    }
   }
 
   @override
@@ -98,6 +161,22 @@ class MovieDetailsScreenState extends State<MovieDetailsScreen>
                 expandedHeight: 300.0,
                 floating: false,
                 pinned: true,
+                actions: [
+                  // Watchlist button
+                  IconButton(
+                    icon: Icon(
+                      widget.item.isInWatchlist
+                          ? Icons.bookmark
+                          : Icons.bookmark_border,
+                      color: Colors.white,
+                      size: 28,
+                    ),
+                    onPressed: _toggleWatchlistStatus,
+                    tooltip: widget.item.isInWatchlist
+                        ? 'Remove from Watchlist'
+                        : 'Add to Watchlist',
+                  ),
+                ],
                 flexibleSpace: FlexibleSpaceBar(
                   title: Text(
                     movie.title,

@@ -15,7 +15,9 @@ class SearchResult {
 
   factory SearchResult.fromJson(Map<String, dynamic> json) {
     return SearchResult(
-      id: json['id'],
+      id: json['id'] is int
+          ? json['id']
+          : int.tryParse(json['id'].toString()) ?? 0,
       title: json['title'] ?? json['name'] ?? 'Untitled',
       posterPath: json['poster_path'],
       mediaType: json['media_type'] ?? 'unknown',
