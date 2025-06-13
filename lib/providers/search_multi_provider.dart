@@ -32,8 +32,8 @@ class SearchMultiProvider extends ChangeNotifier {
   void addToSearchHistory(String query) {
     _searchHistory.remove(query);
     _searchHistory.insert(0, query);
-    if (_searchHistory.length > 10) {
-      _searchHistory = _searchHistory.sublist(0, 10);
+    if (_searchHistory.length > 4) {
+      _searchHistory = _searchHistory.sublist(0, 4);
     }
     _saveSearchHistory();
     notifyListeners();

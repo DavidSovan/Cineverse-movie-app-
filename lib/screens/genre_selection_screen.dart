@@ -1,6 +1,7 @@
 import 'package:cineverse/models/watchlist_item.dart';
 import 'package:cineverse/screens/movie_detail_screen.dart';
 import 'package:cineverse/services/movies_api_service.dart';
+import 'package:cineverse/theme/text_styles.dart';
 import 'package:cineverse/widgets/animated_movie_card.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -51,7 +52,13 @@ class MoviesByGenreScreenState extends State<MoviesByGenreScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.genreName),
+        title: Text(
+          widget.genreName,
+          style: AppTextStyles.textTheme.titleLarge?.copyWith(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
         backgroundColor: Theme.of(context).primaryColor,
         foregroundColor: Colors.white,
         elevation: 0,

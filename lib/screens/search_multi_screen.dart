@@ -1,3 +1,4 @@
+import 'package:cineverse/theme/text_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/search_multi_provider.dart';
@@ -11,7 +12,15 @@ class SearchMultiScreen extends StatelessWidget {
     final provider = Provider.of<SearchMultiProvider>(context);
 
     return Scaffold(
-      appBar: AppBar(title: const Text("Search")),
+      appBar: AppBar(
+        title: Text(
+          "Search",
+          style: AppTextStyles.textTheme.titleLarge?.copyWith(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
       body: Column(
         children: [
           Padding(
