@@ -1,3 +1,4 @@
+import 'package:cineverse/models/watchlist_item.dart';
 import 'package:cineverse/providers/tv_show_provider.dart';
 import 'package:cineverse/screens/tv_show_detail_screen.dart';
 import 'package:cineverse/widgets/animated_tv_card.dart';
@@ -123,7 +124,16 @@ class _PopularTvWidgetState extends State<PopularTvWidget> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => TvShowDetailScreen(tvId: tvShow.id),
+                  builder: (context) => TvShowDetailScreen(
+                    tvId: tvShow.id,
+                    item: WatchlistItem(
+                      id: tvShow.id,
+                      title: tvShow.name,
+                      posterPath: tvShow.posterPath ?? '',
+                      mediaType: 'tv',
+                      releaseDate: tvShow.firstAirDate,
+                    ),
+                  ),
                 ),
               );
             },

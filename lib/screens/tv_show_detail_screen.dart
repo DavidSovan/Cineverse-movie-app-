@@ -1,13 +1,17 @@
+import 'package:cineverse/models/watchlist_item.dart';
 import 'package:cineverse/providers/tv_show_detail_provider.dart';
+import 'package:cineverse/providers/watchlist_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class TvShowDetailScreen extends StatefulWidget {
   final int tvId;
+  final WatchlistItem item;
 
   const TvShowDetailScreen({
     Key? key,
     required this.tvId,
+    required this.item,
   }) : super(key: key);
 
   @override
@@ -20,12 +24,84 @@ class _TvShowDetailScreenState extends State<TvShowDetailScreen> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       context.read<TvShowDetailProvider>().fetchTvShowDetail(widget.tvId);
+
+      // Check if the item is already in the watchlist
+      final watchlistProvider = context.read<WatchlistProvider>();
+      final isInWatchlist = watchlistProvider.isInWatchlist(widget.item.id);
+      if (mounted) {
+        setState(() {
+          widget.item.isInWatchlist = isInWatchlist;
+        });
+      }
     });
+  }
+
+  Future<void> _toggleWatchlistStatus() async {
+    final watchlistProvider =
+        Provider.of<WatchlistProvider>(context, listen: false);
+
+    try {
+      if (widget.item.isInWatchlist) {
+        // Remove from watchlist
+        await watchlistProvider.removeFromWatchlist(widget.item.id);
+        setState(() {
+          widget.item.isInWatchlist = false;
+        });
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Removed from Watchlist'),
+              duration: Duration(seconds: 1),
+            ),
+          );
+        }
+      } else {
+        // Add to watchlist
+        await watchlistProvider.addToWatchlist(widget.item);
+        setState(() {
+          widget.item.isInWatchlist = true;
+        });
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Added to Watchlist'),
+              duration: Duration(seconds: 1),
+            ),
+          );
+        }
+      }
+    } catch (e) {
+      // Handle any errors
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error: ${e.toString()}'),
+            duration: const Duration(seconds: 2),
+          ),
+        );
+      }
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        actions: [
+          IconButton(
+            icon: Icon(
+              widget.item.isInWatchlist
+                  ? Icons.bookmark_added
+                  : Icons.bookmark_add_outlined,
+              color: Colors.white,
+            ),
+            onPressed: _toggleWatchlistStatus,
+          ),
+        ],
+      ),
+      extendBodyBehindAppBar: true,
       body: Consumer<TvShowDetailProvider>(
         builder: (context, provider, child) {
           if (provider.isLoading) {

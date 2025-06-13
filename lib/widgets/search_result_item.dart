@@ -43,7 +43,16 @@ class SearchResultItem extends StatelessWidget {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => TvShowDetailScreen(tvId: result.id),
+              builder: (context) => TvShowDetailScreen(
+                tvId: result.id,
+                item: WatchlistItem(
+                  id: result.id,
+                  title: result.title,
+                  posterPath: result.posterPath ?? '',
+                  mediaType: 'tv',
+                  releaseDate: result.releaseDate ?? '',
+                ),
+              ),
             ),
           );
         }
