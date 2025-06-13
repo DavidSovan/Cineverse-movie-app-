@@ -18,6 +18,18 @@ class HomeDrawer extends StatelessWidget {
               top: MediaQuery.of(context).size.height * 0.25,
             ),
             children: [
+              // Home item
+              ListTile(
+                leading: const Icon(Icons.home),
+                title: const Text('Home'),
+                selected: true, // Default selected
+                onTap: () {
+                  genreProvider.clearGenreSelection();
+                  context.read<MovieProvider>().fetchPopularMovies();
+                  Navigator.pop(context); // Close drawer
+                },
+              ),
+              const Divider(),
               // Watchlist item
               ListTile(
                 leading: const Icon(Icons.bookmark),
@@ -35,8 +47,9 @@ class HomeDrawer extends StatelessWidget {
               const Divider(),
               // Genres section
               ExpansionTile(
+                leading: const Icon(Icons.filter_list),
                 title: const Text('Genres'),
-                initiallyExpanded: true,
+                initiallyExpanded: false,
                 children: [
                   _buildAllMoviesTile(context, genreProvider),
                   ..._buildGenreContent(genreProvider, context),
@@ -52,13 +65,13 @@ class HomeDrawer extends StatelessWidget {
   Widget _buildAllMoviesTile(
       BuildContext context, GenreProvider genreProvider) {
     return ListTile(
-      title: const Text('All Movies'),
       selected: genreProvider.selectedGenre == null,
       onTap: () {
         genreProvider.clearGenreSelection();
         context.read<MovieProvider>().fetchPopularMovies();
         Navigator.pop(context);
       },
+      title: const Text('Trending Movies'),
     );
   }
 
