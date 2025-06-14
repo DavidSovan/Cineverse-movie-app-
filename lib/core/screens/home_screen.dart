@@ -61,13 +61,16 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       drawer: const HomeDrawer(),
       appBar: const HomeAppBar(),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            _buildBody(movieProvider, apiService),
-            const UpcomingMoviesSection(),
-            const PopularTvWidget(),
-          ],
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              _buildBody(movieProvider, apiService),
+              const UpcomingMoviesSection(),
+              const PopularTvWidget(),
+              const SizedBox(height: 16), // Add some bottom padding
+            ],
+          ),
         ),
       ),
     );
