@@ -13,10 +13,11 @@ import 'package:cineverse/features/movies/services/movies_api_service.dart';
 import 'package:cineverse/features/search/providers/search_multi_provider.dart';
 import 'package:cineverse/features/tv_shows/providers/tv_show_detail_provider.dart';
 import 'package:cineverse/features/tv_shows/providers/tv_show_provider.dart';
+import 'package:cineverse/shared/providers/connectivity_provider.dart';
+import 'package:cineverse/shared/widgets/connectivity_guard.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:cineverse/core/theme/app_theme.dart';
 
@@ -29,51 +30,49 @@ void main() async {
   await SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
-  ]);
-
-  // Initialize Google Fonts
-  GoogleFonts.poppins();
-
-  // Get API key from .env
-  final movieApiService = MovieApiService();
-
-  runApp(
-    MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (_) => ThemeProvider()),
-        // Provide the MovieApiService instance
-        Provider<MovieApiService>.value(value: movieApiService),
-        ChangeNotifierProvider(
-          create: (_) => MovieProvider(apiService: movieApiService),
-        ),
-        // Provide the DetailMoviesProvider with the same MovieApiService instance
-        ChangeNotifierProvider(
-          create: (_) => DetailMoviesProvider(movieService: movieApiService),
-        ),
-        // GenreProvider
-        ChangeNotifierProvider(create: (_) => GenreProvider()),
-        // upcoming movies provider
-        ChangeNotifierProvider(create: (_) => UpcomingMoviesProvider()),
-        // VideosMoviesProvider
-        ChangeNotifierProvider(
-          create: (_) => MovieVideosProvider(),
-        ),
-        // MovieCreditsProvider
-        ChangeNotifierProvider(create: (_) => MovieCreditsProvider()),
-        //SimilarMoviesProvider
-        ChangeNotifierProvider(create: (_) => SimilarMoviesProvider()),
-        //tv show provider
-        ChangeNotifierProvider(create: (context) => TvShowProvider()),
-        //tv show detail provider
-        ChangeNotifierProvider(create: (_) => TvShowDetailProvider()),
-        //SearchMultiProvider
-        ChangeNotifierProvider(create: (_) => SearchMultiProvider()),
-        //WatchlistProvider
-        ChangeNotifierProvider(create: (_) => WatchlistProvider()),
-      ],
-      child: const MyApp(),
-    ),
-  );
+  ]).then((_) {
+    runApp(
+      MultiProvider(
+        providers: [
+          // Theme provider should be first
+          ChangeNotifierProvider(create: (_) => ThemeProvider()),
+          // Connectivity provider should be near the top
+          ChangeNotifierProvider(create: (_) => ConnectivityProvider()),
+          // Provide the MovieApiService instance
+          Provider<MovieApiService>.value(value: MovieApiService()),
+          ChangeNotifierProvider(
+            create: (_) => MovieProvider(apiService: MovieApiService()),
+          ),
+          // Provide the DetailMoviesProvider with the same MovieApiService instance
+          ChangeNotifierProvider(
+            create: (_) =>
+                DetailMoviesProvider(movieService: MovieApiService()),
+          ),
+          // GenreProvider
+          ChangeNotifierProvider(create: (_) => GenreProvider()),
+          // upcoming movies provider
+          ChangeNotifierProvider(create: (_) => UpcomingMoviesProvider()),
+          // VideosMoviesProvider
+          ChangeNotifierProvider(
+            create: (_) => MovieVideosProvider(),
+          ),
+          // MovieCreditsProvider
+          ChangeNotifierProvider(create: (_) => MovieCreditsProvider()),
+          //SimilarMoviesProvider
+          ChangeNotifierProvider(create: (_) => SimilarMoviesProvider()),
+          //tv show provider
+          ChangeNotifierProvider(create: (context) => TvShowProvider()),
+          //tv show detail provider
+          ChangeNotifierProvider(create: (_) => TvShowDetailProvider()),
+          //SearchMultiProvider
+          ChangeNotifierProvider(create: (_) => SearchMultiProvider()),
+          //WatchlistProvider
+          ChangeNotifierProvider(create: (_) => WatchlistProvider()),
+        ],
+        child: const MyApp(),
+      ),
+    );
+  });
 }
 
 class MyApp extends StatelessWidget {
@@ -89,9 +88,13 @@ class MyApp extends StatelessWidget {
           themeMode: themeProvider.themeMode,
           theme: AppTheme.lightTheme(),
           darkTheme: AppTheme.darkTheme(),
-          home: const SplashScreen(),
+          home: const ConnectivityGuard(
+            child: SplashScreen(),
+          ),
           routes: {
-            '/home': (context) => const HomeScreen(),
+            '/home': (context) => const ConnectivityGuard(
+                  child: HomeScreen(),
+                ),
           },
         );
       },
