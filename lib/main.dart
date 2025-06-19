@@ -24,7 +24,7 @@ import 'package:cineverse/core/theme/app_theme.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   // Load environment variables
-  await dotenv.load(fileName: ".env");
+  await dotenv.load(fileName: "assets/.env");
 
   // Lock orientation to portrait
   await SystemChrome.setPreferredOrientations([
