@@ -4,7 +4,6 @@ import 'package:cineverse/core/theme/text_styles.dart';
 import 'package:cineverse/features/drawer/watchlist_item.dart';
 import 'package:cineverse/features/drawer/watchlist_provider.dart';
 import 'package:cineverse/features/movies/providers/movie_credits_provider.dart';
-
 import 'package:cineverse/features/movies/widgets/movie_credit_widget.dart';
 import 'package:cineverse/features/movies/widgets/movie_videos_widget.dart';
 import 'package:cineverse/features/movies/widgets/similar_movies_widget.dart';
@@ -332,26 +331,30 @@ class MovieDetailsScreenState extends State<MovieDetailsScreen>
                                 ),
                                 const SizedBox(height: 24),
                               ],
-                              /////////////////
-                              //Movie Videos//
-                              ////////////////
+                              /*
+                              
+                              Movie Videos
+
+                              */
                               MovieVideosWidget(
                                 movieId: widget.movieId,
                                 title: 'Official Trailers',
                                 padding: EdgeInsets.zero,
                                 maxVideos: 3,
                               ),
-
                               const SizedBox(height: 24),
 
-                              /////////////////
-                              //Movie Credits//
-                              ////////////////
+                              /*
+                              
+                              Movie Credits
+
+                              */
+
                               ChangeNotifierProvider(
                                 create: (context) => MovieCreditsProvider(),
                                 child: Container(
                                   height:
-                                      400, // Fixed height to prevent layout issues
+                                      300, // Fixed height to prevent layout issues
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(12),
                                     color: Theme.of(context).cardColor,
@@ -362,15 +365,15 @@ class MovieDetailsScreenState extends State<MovieDetailsScreen>
                               ),
                               const SizedBox(height: 24),
 
-                              ///////////////
-                              //Similar Movies//
-                              ///////////////
+                              /*
+                              
+                              Similar Movies
+
+                              */
                               SimilarMoviesGridWidget(
                                 movieId: widget.movieId,
                               ),
-
                               const SizedBox(height: 24),
-
                               const SizedBox(height: 24),
                               if (movie.budget != null &&
                                   movie.budget! > 0) ...[
