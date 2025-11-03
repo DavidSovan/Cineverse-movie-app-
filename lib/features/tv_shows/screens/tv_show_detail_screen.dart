@@ -2,6 +2,7 @@ import 'package:cineverse/features/drawer/watchlist_item.dart';
 import 'package:cineverse/features/drawer/watchlist_provider.dart';
 import 'package:cineverse/features/tv_shows/providers/tv_show_detail_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 class TvShowDetailScreen extends StatefulWidget {
@@ -158,18 +159,29 @@ class _TvShowDetailScreenState extends State<TvShowDetailScreen> {
                 expandedHeight: 300,
                 pinned: true,
                 flexibleSpace: FlexibleSpaceBar(
-                  title: Text(
-                    tvShow.name,
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      shadows: [
-                        Shadow(
-                          offset: Offset(0, 1),
-                          blurRadius: 3,
-                          color: Colors.black54,
+                  title: GestureDetector(
+                    onTap: () {
+                      Clipboard.setData(ClipboardData(text: tvShow.name));
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text('Copied: ${tvShow.name}'),
+                          duration: const Duration(seconds: 2),
                         ),
-                      ],
+                      );
+                    },
+                    child: Text(
+                      tvShow.name,
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        shadows: [
+                          Shadow(
+                            offset: Offset(0, 1),
+                            blurRadius: 3,
+                            color: Colors.black54,
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                   background: tvShow.fullBackdropPath.isNotEmpty

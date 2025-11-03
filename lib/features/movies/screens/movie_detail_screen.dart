@@ -8,6 +8,7 @@ import 'package:cineverse/features/movies/widgets/movie_credit_widget.dart';
 import 'package:cineverse/features/movies/widgets/movie_videos_widget.dart';
 import 'package:cineverse/features/movies/widgets/similar_movies_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:cineverse/features/movies/providers/detail_movies_provider.dart';
@@ -178,10 +179,21 @@ class MovieDetailsScreenState extends State<MovieDetailsScreen>
                   ),
                 ],
                 flexibleSpace: FlexibleSpaceBar(
-                  title: Text(
-                    movie.title,
-                    style: AppTextStyles.featuredMovieTitle.copyWith(
-                      color: Colors.white,
+                  title: GestureDetector(
+                    onTap: () {
+                      Clipboard.setData(ClipboardData(text: movie.title));
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text('Copied: ${movie.title}'),
+                          duration: const Duration(seconds: 2),
+                        ),
+                      );
+                    },
+                    child: Text(
+                      movie.title,
+                      style: AppTextStyles.featuredMovieTitle.copyWith(
+                        color: Colors.white,
+                      ),
                     ),
                   ),
                   background: Stack(

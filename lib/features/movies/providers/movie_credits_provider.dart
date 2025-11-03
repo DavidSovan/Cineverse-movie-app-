@@ -13,6 +13,7 @@ class MovieCreditsProvider with ChangeNotifier {
   MovieCredits? _movieCredits;
   MovieCreditsState _state = MovieCreditsState.initial;
   String? _errorMessage;
+  bool _isDisposed = false;
 
   MovieCredits? get movieCredits => _movieCredits;
   MovieCreditsState get state => _state;
@@ -22,18 +23,20 @@ class MovieCreditsProvider with ChangeNotifier {
   Future<void> fetchMovieCredits(int movieId) async {
     _state = MovieCreditsState.loading;
     _errorMessage = null;
-    notifyListeners();
+    _safeNotifyListeners();
 
     try {
       // Explicit type annotation to ensure correct type
       final MovieCredits result = await _apiService.fetchMovieCredits(movieId);
+      if (_isDisposed) return; // Guard against disposed during await
       _movieCredits = result;
       _state = MovieCreditsState.loaded;
     } catch (e) {
+      if (_isDisposed) return;
       _errorMessage = e.toString();
       _state = MovieCreditsState.error;
     } finally {
-      notifyListeners();
+      _safeNotifyListeners();
     }
   }
 
@@ -42,6 +45,17 @@ class MovieCreditsProvider with ChangeNotifier {
     _movieCredits = null;
     _state = MovieCreditsState.initial;
     _errorMessage = null;
+    _safeNotifyListeners();
+  }
+
+  void _safeNotifyListeners() {
+    if (_isDisposed) return;
     notifyListeners();
+  }
+
+  @override
+  void dispose() {
+    _isDisposed = true;
+    super.dispose();
   }
 }
