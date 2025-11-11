@@ -155,13 +155,26 @@ class MovieDetailsScreenState extends State<MovieDetailsScreen>
           );
         }
 
-        return Scaffold(
-          body: CustomScrollView(
-            slivers: [
-              SliverAppBar(
-                expandedHeight: 300.0,
-                floating: false,
-                pinned: true,
+        return LayoutBuilder(
+          builder: (context, constraints) {
+            final screenWidth = constraints.maxWidth;
+            final isLargeScreen = screenWidth > 600;
+            final isExtraLargeScreen = screenWidth > 1200;
+            
+            // Responsive expandedHeight: limit on larger screens
+            final expandedHeight = isExtraLargeScreen
+                ? 400.0
+                : isLargeScreen
+                    ? 350.0
+                    : 300.0;
+
+            return Scaffold(
+              body: CustomScrollView(
+                slivers: [
+                  SliverAppBar(
+                    expandedHeight: expandedHeight,
+                    floating: false,
+                    pinned: true,
                 actions: [
                   // Watchlist button
                   IconButton(
@@ -247,7 +260,10 @@ class MovieDetailsScreenState extends State<MovieDetailsScreen>
                       child: SlideTransition(
                         position: _slideAnimation,
                         child: Padding(
-                          padding: const EdgeInsets.all(16.0),
+                          padding: EdgeInsets.symmetric(
+                            horizontal: isExtraLargeScreen ? 48.0 : isLargeScreen ? 32.0 : 16.0,
+                            vertical: 16.0,
+                          ),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -266,50 +282,72 @@ class MovieDetailsScreenState extends State<MovieDetailsScreen>
                                         ),
                                   ),
                                 ),
-                              Row(
-                                children: [
-                                  Expanded(
-                                    flex: 2,
-                                    child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(
-                                          AppDimensions.cardBorderRadius),
-                                      child: Image.network(
-                                        apiService
-                                            .getImageUrl(movie.posterPath),
-                                        height: 200,
-                                        fit: BoxFit.cover,
-                                      ),
-                                    ),
-                                  ),
-                                  const SizedBox(width: 16),
-                                  Expanded(
-                                    flex: 3,
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        _buildInfoRow(context, 'Rating',
-                                            '${movie.voteAverage}/10'),
-                                        const SizedBox(height: 8),
-                                        _buildInfoRow(context, 'Released',
-                                            movie.releaseDate),
-                                        if (movie.runtime != null) ...[
-                                          const SizedBox(height: 8),
-                                          _buildInfoRow(
-                                            context,
-                                            'Runtime',
-                                            '${movie.runtime} min',
+                              LayoutBuilder(
+                                builder: (context, innerConstraints) {
+                                  // Calculate responsive poster width
+                                  // Max 260px, but scale down on smaller screens
+                                  final posterWidth = (screenWidth * 0.25).clamp(120.0, 260.0);
+                                  
+                                  return Row(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      // Poster Image with responsive sizing
+                                      SizedBox(
+                                        width: posterWidth,
+                                        child: AspectRatio(
+                                          aspectRatio: 2 / 3,
+                                          child: ClipRRect(
+                                            borderRadius: BorderRadius.circular(
+                                                AppDimensions.cardBorderRadius),
+                                            child: Image.network(
+                                              apiService
+                                                  .getImageUrl(movie.posterPath),
+                                              fit: BoxFit.cover,
+                                              errorBuilder: (context, error, stackTrace) {
+                                                return Container(
+                                                  color: AppColors.mediumGrey,
+                                                  child: const Icon(
+                                                    Icons.movie,
+                                                    size: 48,
+                                                    color: Colors.white54,
+                                                  ),
+                                                );
+                                              },
+                                            ),
                                           ),
-                                        ],
-                                        if (movie.status != null) ...[
-                                          const SizedBox(height: 8),
-                                          _buildInfoRow(
-                                              context, 'Status', movie.status!),
-                                        ],
-                                      ],
-                                    ),
-                                  ),
-                                ],
+                                        ),
+                                      ),
+                                      SizedBox(width: isLargeScreen ? 24 : 16),
+                                      // Movie Info
+                                      Expanded(
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            _buildInfoRow(context, 'Rating',
+                                                '${movie.voteAverage}/10'),
+                                            const SizedBox(height: 8),
+                                            _buildInfoRow(context, 'Released',
+                                                movie.releaseDate),
+                                            if (movie.runtime != null) ...[
+                                              const SizedBox(height: 8),
+                                              _buildInfoRow(
+                                                context,
+                                                'Runtime',
+                                                '${movie.runtime} min',
+                                              ),
+                                            ],
+                                            if (movie.status != null) ...[
+                                              const SizedBox(height: 8),
+                                              _buildInfoRow(
+                                                  context, 'Status', movie.status!),
+                                            ],
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  );
+                                },
                               ),
                               const SizedBox(height: 24),
                               Text(
@@ -460,6 +498,8 @@ class MovieDetailsScreenState extends State<MovieDetailsScreen>
             ],
           ),
         );
+            },
+          );
       },
     );
   }
