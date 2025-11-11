@@ -7,12 +7,28 @@ import '../widgets/read_more_text.dart';
 import '../models/movie_credit_model.dart';
 import '../../movies/screens/movie_detail_screen.dart';
 
-class PersonDetailScreen extends StatelessWidget {
+class PersonDetailScreen extends StatefulWidget {
   final int personId;
   final String tag;
 
   const PersonDetailScreen(
       {super.key, required this.personId, required this.tag});
+
+  @override
+  State<PersonDetailScreen> createState() => _PersonDetailScreenState();
+}
+
+class _PersonDetailScreenState extends State<PersonDetailScreen> {
+  @override
+  void initState() {
+    super.initState();
+    // Fetch person data once when the screen is initialized
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final provider = context.read<PersonProvider>();
+      provider.loadPerson(widget.personId);
+      provider.loadMovieCredits(widget.personId);
+    });
+  }
 
   int? calculateAge(String? birthday) {
     if (birthday == null) return null;
@@ -120,20 +136,50 @@ class PersonDetailScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<PersonProvider>(
       builder: (context, provider, _) {
-        // Load person data when the widget is first built
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-          if (provider.person == null || provider.person!.id != personId) {
-            provider.loadPerson(personId);
-            provider.loadMovieCredits(personId);
-          }
-        });
-
         if (provider.isLoading) {
-          return const Center(child: CircularProgressIndicator());
+          return const Scaffold(
+            body: Center(child: CircularProgressIndicator()),
+          );
         }
 
         if (provider.error != null) {
-          return Center(child: Text(provider.error!));
+          return Scaffold(
+            appBar: AppBar(title: const Text('Error')),
+            body: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Icon(Icons.error_outline, size: 64, color: Colors.red),
+                  const SizedBox(height: 16),
+                  Text(
+                    'Failed to load person details',
+                    style: Theme.of(context).textTheme.titleLarge,
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    provider.error!,
+                    style: Theme.of(context).textTheme.bodyMedium,
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 24),
+                  ElevatedButton.icon(
+                    onPressed: () {
+                      provider.loadPerson(widget.personId);
+                      provider.loadMovieCredits(widget.personId);
+                    },
+                    icon: const Icon(Icons.refresh),
+                    label: const Text('Retry'),
+                  ),
+                ],
+              ),
+            ),
+          );
+        }
+
+        if (provider.person == null) {
+          return const Scaffold(
+            body: Center(child: Text('No person data available')),
+          );
         }
 
         final person = provider.person!;
@@ -155,7 +201,7 @@ class PersonDetailScreen extends StatelessWidget {
                     fit: StackFit.expand,
                     children: [
                       Hero(
-                        tag: tag,
+                        tag: widget.tag,
                         child: profileUrl != null
                             ? Image.network(profileUrl, fit: BoxFit.cover)
                             : Container(

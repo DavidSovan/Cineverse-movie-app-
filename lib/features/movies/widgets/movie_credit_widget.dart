@@ -144,7 +144,7 @@ class _MovieCreditsWidgetState extends State<MovieCreditsWidget> {
           context,
           MaterialPageRoute(
             builder: (_) => ChangeNotifierProvider(
-              create: (_) => PersonProvider()..loadPerson(castMember.id),
+              create: (_) => PersonProvider(),
               child: PersonDetailScreen(
                 personId: castMember.id,
                 tag: 'cast_${castMember.id}',

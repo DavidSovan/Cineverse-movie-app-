@@ -65,8 +65,8 @@ class SimilarMoviesGridWidget extends StatelessWidget {
     return GridView.builder(
       shrinkWrap: true,
       physics: const ClampingScrollPhysics(),
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
+      gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+        maxCrossAxisExtent: 200,
         childAspectRatio: 0.65,
         crossAxisSpacing: 12,
         mainAxisSpacing: 12,
@@ -128,8 +128,8 @@ class SimilarMoviesGridWidget extends StatelessWidget {
     return GridView.builder(
       shrinkWrap: true,
       physics: const ClampingScrollPhysics(),
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
+      gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+        maxCrossAxisExtent: 200,
         childAspectRatio: 0.65,
         crossAxisSpacing: 12,
         mainAxisSpacing: 12,
