@@ -48,7 +48,7 @@ class LoadingWrapper extends StatelessWidget {
         if (isLoading)
           AnimatedContainer(
             duration: const Duration(milliseconds: 300),
-            color: overlayColor ?? Colors.black.withValues(alpha: 0.6),
+            color: overlayColor ?? Colors.black.withOpacity(0.6),
             child: blurBackground
                 ? BackdropFilter(
                     filter: ImageFilter.blur(sigmaX: 3, sigmaY: 3),
@@ -196,7 +196,7 @@ class _HomeScreenState extends State<HomeScreen> {
         loadingMessage: _loadingMessage,
         loadingStyle: LoadingStyle.elegant,
         primaryColor: AppColors.primaryRed,
-        overlayColor: Colors.black.withValues(alpha: 0.7),
+        overlayColor: Colors.black.withOpacity(0.7),
         blurBackground: true,
         child: SafeArea(
           child: SingleChildScrollView(
@@ -236,9 +236,9 @@ class _HomeScreenState extends State<HomeScreen> {
           margin: const EdgeInsets.all(16),
           padding: const EdgeInsets.all(24),
           decoration: BoxDecoration(
-            color: AppColors.error.withValues(alpha: 0.1),
+            color: AppColors.error.withOpacity(0.1),
             borderRadius: BorderRadius.circular(12),
-            border: Border.all(color: AppColors.error.withValues(alpha: 0.3)),
+            border: Border.all(color: AppColors.error.withOpacity(0.3)),
           ),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,

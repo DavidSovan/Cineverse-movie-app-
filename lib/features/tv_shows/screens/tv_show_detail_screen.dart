@@ -208,7 +208,7 @@ class _TvShowDetailScreenState extends State<TvShowDetailScreen> {
                                   end: Alignment.bottomCenter,
                                   colors: [
                                     Colors.transparent,
-                                    Colors.black.withValues(alpha: 0.7),
+                                    Colors.black.withOpacity(0.7),
                                   ],
                                 ),
                               ),
@@ -237,7 +237,7 @@ class _TvShowDetailScreenState extends State<TvShowDetailScreen> {
                               borderRadius: BorderRadius.circular(8),
                               boxShadow: [
                                 BoxShadow(
-                                  color: Colors.black.withValues(alpha: 0.3),
+                                  color: Colors.black.withOpacity(0.3),
                                   blurRadius: 8,
                                   offset: const Offset(0, 4),
                                 ),
@@ -395,7 +395,7 @@ class _TvShowDetailScreenState extends State<TvShowDetailScreen> {
                                     label: Text(genre.name),
                                     backgroundColor: Theme.of(context)
                                         .primaryColor
-                                        .withValues(alpha: 0.1),
+                                        .withOpacity(0.1),
                                   ))
                               .toList(),
                         ),
@@ -435,7 +435,7 @@ class _TvShowDetailScreenState extends State<TvShowDetailScreen> {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(
-        color: Theme.of(context).primaryColor.withValues(alpha: 0.1),
+        color: Theme.of(context).primaryColor.withOpacity(0.1),
         borderRadius: BorderRadius.circular(16),
       ),
       child: Row(

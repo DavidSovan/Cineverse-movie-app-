@@ -39,7 +39,7 @@ class WatchlistScreen extends StatelessWidget {
               gradient: LinearGradient(
                 colors: [
                   Colors.transparent,
-                  AppColors.offWhite.withValues(alpha: 0.1),
+                  AppColors.offWhite.withOpacity(0.1),
                   Colors.transparent,
                 ],
               ),
@@ -119,8 +119,8 @@ class WatchlistScreen extends StatelessWidget {
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 colors: [
-                  Colors.grey.withValues(alpha: 0.1),
-                  Colors.grey.withValues(alpha: 0.05),
+                  Colors.grey.withOpacity(0.1),
+                  Colors.grey.withOpacity(0.05),
                 ],
               ),
               shape: BoxShape.circle,
@@ -212,7 +212,7 @@ class WatchlistScreen extends StatelessWidget {
         ),
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: AppColors.offWhite.withValues(alpha: 0.05),
+          color: AppColors.offWhite.withOpacity(0.05),
           width: 1,
         ),
       ),
@@ -248,7 +248,7 @@ class WatchlistScreen extends StatelessWidget {
                         borderRadius: BorderRadius.circular(12),
                         boxShadow: [
                           BoxShadow(
-                            color: Colors.black.withValues(alpha: 0.3),
+                            color: Colors.black.withOpacity(0.3),
                             blurRadius: 8,
                             offset: const Offset(0, 4),
                           ),
@@ -316,10 +316,8 @@ class WatchlistScreen extends StatelessWidget {
                               ),
                               decoration: BoxDecoration(
                                 color: item.mediaType.toLowerCase() == 'movie'
-                                    ? const Color(0xFF10B981)
-                                        .withValues(alpha: 0.2)
-                                    : const Color(0xFFF59E0B)
-                                        .withValues(alpha: 0.2),
+                                    ? const Color(0xFF10B981).withOpacity(0.2)
+                                    : const Color(0xFFF59E0B).withOpacity(0.2),
                                 borderRadius: BorderRadius.circular(6),
                                 border: Border.all(
                                   color: item.mediaType.toLowerCase() == 'movie'
@@ -423,10 +421,10 @@ class WatchlistScreen extends StatelessWidget {
                             const SizedBox(width: 12),
                             Container(
                               decoration: BoxDecoration(
-                                color: Colors.red.withValues(alpha: 0.1),
+                                color: Colors.red.withOpacity(0.1),
                                 borderRadius: BorderRadius.circular(8),
                                 border: Border.all(
-                                  color: Colors.red.withValues(alpha: 0.3),
+                                  color: Colors.red.withOpacity(0.3),
                                   width: 1,
                                 ),
                               ),

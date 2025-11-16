@@ -145,10 +145,10 @@ class _LoadingAnimationState extends State<LoadingAnimation>
               shape: BoxShape.circle,
               gradient: SweepGradient(
                 colors: [
-                  primaryColor.withValues(alpha: 0.1),
-                  primaryColor.withValues(alpha: 0.3),
+                  primaryColor.withOpacity(0.1),
+                  primaryColor.withOpacity(0.3),
                   primaryColor,
-                  primaryColor.withValues(alpha: 0.1),
+                  primaryColor.withOpacity(0.1),
                 ],
                 stops: const [0.0, 0.3, 0.6, 1.0],
               ),
@@ -175,7 +175,7 @@ class _LoadingAnimationState extends State<LoadingAnimation>
       child: CircularProgressIndicator(
         strokeWidth: 2.5,
         valueColor: AlwaysStoppedAnimation<Color>(primaryColor),
-        backgroundColor: primaryColor.withValues(alpha: 0.1),
+        backgroundColor: primaryColor.withOpacity(0.1),
         strokeCap: StrokeCap.round,
       ),
     );
@@ -195,7 +195,7 @@ class _LoadingAnimationState extends State<LoadingAnimation>
               shape: BoxShape.circle,
               boxShadow: [
                 BoxShadow(
-                  color: primaryColor.withValues(alpha: 0.3),
+                  color: primaryColor.withOpacity(0.3),
                   blurRadius: 12,
                   spreadRadius: 2,
                 ),
@@ -204,7 +204,7 @@ class _LoadingAnimationState extends State<LoadingAnimation>
             child: CircularProgressIndicator(
               strokeWidth: 3.0,
               valueColor: AlwaysStoppedAnimation<Color>(primaryColor),
-              backgroundColor: primaryColor.withValues(alpha: 0.1),
+              backgroundColor: primaryColor.withOpacity(0.1),
               strokeCap: StrokeCap.round,
             ),
           ),
@@ -228,7 +228,7 @@ class _LoadingAnimationState extends State<LoadingAnimation>
                 height: widget.size + 20,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: primaryColor.withValues(alpha: 0.1),
+                  color: primaryColor.withOpacity(0.1),
                 ),
               ),
             ),
@@ -261,7 +261,7 @@ class _LoadingAnimationState extends State<LoadingAnimation>
               borderRadius: BorderRadius.circular(20),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withValues(alpha: 0.05),
+                  color: Colors.black.withOpacity(0.05),
                   blurRadius: 8,
                   offset: const Offset(0, 2),
                 ),
@@ -273,7 +273,7 @@ class _LoadingAnimationState extends State<LoadingAnimation>
                 fontSize: 14,
                 fontWeight: FontWeight.w500,
                 color:
-                    theme.textTheme.bodyMedium?.color?.withValues(alpha: 0.8),
+                    theme.textTheme.bodyMedium?.color?.withOpacity(0.8),
               ),
               textAlign: TextAlign.center,
             ),
