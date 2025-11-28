@@ -1,18 +1,31 @@
 import 'package:cineverse/features/drawer/watchlist_item.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:intl/intl.dart';
 import '../providers/person_provider.dart';
-import '../widgets/read_more_text.dart';
-import '../models/movie_credit_model.dart';
+import '../widgets/person_header.dart';
+import '../widgets/person_biography_section.dart';
+import '../widgets/person_info_section.dart';
+import '../widgets/person_also_known_as_section.dart';
+import '../widgets/person_filmography_section.dart';
 import '../../movies/screens/movie_detail_screen.dart';
 
+/// PersonDetailScreen displays comprehensive information about a person (actor, director, etc.)
+/// with a fully responsive, modern Material 3 design.
+///
+/// Features:
+/// - Responsive layout for mobile, tablet, and desktop
+/// - Smooth animations and transitions
+/// - Theme-aware dark mode support
+/// - Extracted reusable widgets for better maintainability
 class PersonDetailScreen extends StatefulWidget {
   final int personId;
   final String tag;
 
-  const PersonDetailScreen(
-      {super.key, required this.personId, required this.tag});
+  const PersonDetailScreen({
+    super.key,
+    required this.personId,
+    required this.tag,
+  });
 
   @override
   State<PersonDetailScreen> createState() => _PersonDetailScreenState();
@@ -22,7 +35,11 @@ class _PersonDetailScreenState extends State<PersonDetailScreen> {
   @override
   void initState() {
     super.initState();
-    // Fetch person data once when the screen is initialized
+    _loadPersonData();
+  }
+
+  /// Load person data when the screen is initialized
+  void _loadPersonData() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final provider = context.read<PersonProvider>();
       provider.loadPerson(widget.personId);
@@ -30,322 +47,262 @@ class _PersonDetailScreenState extends State<PersonDetailScreen> {
     });
   }
 
-  int? calculateAge(String? birthday) {
-    if (birthday == null) return null;
-    try {
-      final birthDate = DateTime.parse(birthday);
-      final today = DateTime.now();
-      int age = today.year - birthDate.year;
-      if (today.month < birthDate.month ||
-          (today.month == birthDate.month && today.day < birthDate.day)) {
-        age--;
-      }
-      return age;
-    } catch (e) {
-      return null;
-    }
-  }
-
-  Widget _buildMovieList(List<MovieCredit> credits) {
-    return credits.isEmpty
-        ? const Center(
-            child: Padding(
-              padding: EdgeInsets.all(16.0),
-              child: Text('No credits available'),
-            ),
-          )
-        : ListView.builder(
-            scrollDirection: Axis.horizontal,
-            itemCount: credits.length,
-            itemBuilder: (context, index) {
-              final credit = credits[index];
-              final posterUrl = credit.posterPath != null
-                  ? 'https://image.tmdb.org/t/p/w200${credit.posterPath}'
-                  : null;
-
-              return GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (_) => MovieDetailsScreen(
-                        movieId: credit.id,
-                        item: WatchlistItem(
-                          id: credit.id,
-                          title: credit.title,
-                          posterPath: credit.posterPath ?? '',
-                          mediaType: 'movie',
-                          releaseDate: '',
-                        ),
-                      ),
-                    ),
-                  );
-                },
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    children: [
-                      posterUrl != null
-                          ? Image.network(
-                              posterUrl,
-                              height: 160,
-                              errorBuilder: (_, __, ___) => Container(
-                                height: 160,
-                                width: 100,
-                                color: Colors.grey[300],
-                                child: const Icon(Icons.movie, size: 40),
-                              ),
-                            )
-                          : Container(
-                              height: 160,
-                              width: 100,
-                              color: Colors.grey[300],
-                              child: const Icon(Icons.movie, size: 40),
-                            ),
-                      const SizedBox(height: 8),
-                      SizedBox(
-                        width: 100,
-                        child: Text(
-                          credit.title,
-                          style: const TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 12),
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ),
-                      const SizedBox(height: 4),
-                      SizedBox(
-                        width: 100,
-                        child: Text(
-                          credit.character ?? credit.job ?? '',
-                          style:
-                              const TextStyle(fontSize: 11, color: Colors.grey),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              );
-            },
-          );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Consumer<PersonProvider>(
       builder: (context, provider, _) {
+        // Handle loading state
         if (provider.isLoading) {
           return const Scaffold(
             body: Center(child: CircularProgressIndicator()),
           );
         }
 
+        // Handle error state
         if (provider.error != null) {
-          return Scaffold(
-            appBar: AppBar(title: const Text('Error')),
-            body: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Icon(Icons.error_outline, size: 64, color: Colors.red),
-                  const SizedBox(height: 16),
-                  Text(
-                    'Failed to load person details',
-                    style: Theme.of(context).textTheme.titleLarge,
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    provider.error!,
-                    style: Theme.of(context).textTheme.bodyMedium,
-                    textAlign: TextAlign.center,
-                  ),
-                  const SizedBox(height: 24),
-                  ElevatedButton.icon(
-                    onPressed: () {
-                      provider.loadPerson(widget.personId);
-                      provider.loadMovieCredits(widget.personId);
-                    },
-                    icon: const Icon(Icons.refresh),
-                    label: const Text('Retry'),
-                  ),
-                ],
-              ),
-            ),
-          );
+          return _buildErrorScreen(context, provider);
         }
 
+        // Handle empty data state
         if (provider.person == null) {
           return const Scaffold(
             body: Center(child: Text('No person data available')),
           );
         }
 
-        final person = provider.person!;
-        final age =
-            person.birthday != null ? calculateAge(person.birthday) : null;
-        final profileUrl = person.profilePath != null
-            ? 'https://image.tmdb.org/t/p/w500${person.profilePath}'
-            : null;
-
-        return Scaffold(
-          body: CustomScrollView(
-            slivers: [
-              SliverAppBar(
-                expandedHeight: 300,
-                pinned: true,
-                flexibleSpace: FlexibleSpaceBar(
-                  title: Text(person.name),
-                  background: Stack(
-                    fit: StackFit.expand,
-                    children: [
-                      Hero(
-                        tag: widget.tag,
-                        child: profileUrl != null
-                            ? Image.network(profileUrl, fit: BoxFit.cover)
-                            : Container(
-                                color: Colors.grey,
-                                child: const Center(
-                                  child: Icon(Icons.person,
-                                      size: 100, color: Colors.white),
-                                ),
-                              ),
-                      ),
-                      const DecoratedBox(
-                        decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                            begin: Alignment.topCenter,
-                            end: Alignment.bottomCenter,
-                            colors: [Colors.transparent, Colors.black54],
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              SliverToBoxAdapter(
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        person.knownForDepartment,
-                        style: const TextStyle(
-                            fontSize: 16, fontStyle: FontStyle.italic),
-                      ),
-                      const SizedBox(height: 16),
-
-                      // Biography
-                      const Text("Biography",
-                          style: TextStyle(
-                              fontSize: 20, fontWeight: FontWeight.bold)),
-                      const SizedBox(height: 8),
-                      ReadMoreText(text: person.biography),
-
-                      const SizedBox(height: 16),
-
-                      // Birthday + Place of Birth
-                      if (person.birthday != null) ...[
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(top: 2.0),
-                              child: Icon(Icons.cake_outlined,
-                                  color: Colors.grey[700], size: 20),
-                            ),
-                            const SizedBox(width: 8),
-                            Expanded(
-                              child: Text(
-                                "Born: ${DateFormat.yMMMMd().format(DateTime.parse(person.birthday!))}${age != null ? ' ($age years)' : ''}",
-                                overflow: TextOverflow.visible,
-                              ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 8),
-                      ],
-                      if (person.placeOfBirth != null &&
-                          person.placeOfBirth!.isNotEmpty) ...[
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(top: 2.0),
-                              child: Icon(Icons.place,
-                                  color: Colors.grey[700], size: 20),
-                            ),
-                            const SizedBox(width: 7),
-                            Expanded(
-                              child: Text(
-                                "Place of Birth: ${person.placeOfBirth}",
-                                overflow: TextOverflow.visible,
-                              ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 16),
-                      ],
-
-                      const SizedBox(height: 16),
-
-                      // Also Known As
-                      if (person.alsoKnownAs.isNotEmpty) ...[
-                        const Text("Also Known As",
-                            style: TextStyle(
-                                fontSize: 18, fontWeight: FontWeight.bold)),
-                        const SizedBox(height: 8),
-                        Wrap(
-                          spacing: 8,
-                          children: person.alsoKnownAs
-                              .map((name) => Chip(label: Text(name)))
-                              .toList(),
-                        ),
-                      ],
-
-                      const SizedBox(height: 32),
-                      const Text("Filmography",
-                          style: TextStyle(
-                              fontSize: 20, fontWeight: FontWeight.bold)),
-                      const SizedBox(height: 8),
-
-                      // Filmography Tabs
-                      DefaultTabController(
-                        length: 2,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const TabBar(
-                              tabs: [
-                                Tab(text: 'Acting'),
-                                Tab(text: 'Production'),
-                              ],
-                              labelColor: Colors.black,
-                              indicatorColor: Colors.black,
-                            ),
-                            SizedBox(
-                              height: 250,
-                              child: TabBarView(
-                                children: [
-                                  _buildMovieList(provider.actingCredits),
-                                  _buildMovieList(provider.productionCredits),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ],
-          ),
-        );
+        // Build main content
+        return _buildMainContent(context, provider);
       },
+    );
+  }
+
+  /// Build error state UI
+  Widget _buildErrorScreen(BuildContext context, PersonProvider provider) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('Error')),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              Icons.error_outline,
+              size: 64,
+              color: Theme.of(context).colorScheme.error,
+            ),
+            const SizedBox(height: 16),
+            Text(
+              'Failed to load person details',
+              style: Theme.of(context).textTheme.titleLarge,
+            ),
+            const SizedBox(height: 8),
+            Text(
+              provider.error!,
+              style: Theme.of(context).textTheme.bodyMedium,
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 24),
+            ElevatedButton.icon(
+              onPressed: () => _loadPersonData(),
+              icon: const Icon(Icons.refresh),
+              label: const Text('Retry'),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  /// Build main content with responsive layout
+  Widget _buildMainContent(BuildContext context, PersonProvider provider) {
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final isTablet = constraints.maxWidth >= 600 && constraints.maxWidth < 1024;
+        final isDesktop = constraints.maxWidth >= 1024;
+
+        if (isDesktop) {
+          return _buildDesktopLayout(context, provider);
+        } else if (isTablet) {
+          return _buildTabletLayout(context, provider);
+        } else {
+          return _buildMobileLayout(context, provider);
+        }
+      },
+    );
+  }
+
+  /// Mobile layout with collapsible header
+  Widget _buildMobileLayout(BuildContext context, PersonProvider provider) {
+    final person = provider.person!;
+
+    return Scaffold(
+      body: CustomScrollView(
+        slivers: [
+          // Header with collapsible app bar
+          SliverAppBar(
+            expandedHeight: 300,
+            pinned: true,
+            flexibleSpace: FlexibleSpaceBar(
+              title: Text(person.name),
+              background: PersonHeader(
+                person: person,
+                tag: widget.tag,
+              ),
+            ),
+          ),
+          // Content sections
+          SliverToBoxAdapter(
+            child: Column(
+              children: [
+                _buildContentSections(context, provider),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  /// Tablet layout with side-by-side arrangement
+  Widget _buildTabletLayout(BuildContext context, PersonProvider provider) {
+    final person = provider.person!;
+
+    return Scaffold(
+      appBar: AppBar(title: Text(person.name)),
+      body: SingleChildScrollView(
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Left side: Profile image and basic info
+            Expanded(
+              flex: 2,
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: PersonHeader(
+                  person: person,
+                  tag: widget.tag,
+                  isCompact: true,
+                ),
+              ),
+            ),
+            // Right side: Details and filmography
+            Expanded(
+              flex: 3,
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: _buildContentSections(context, provider),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  /// Desktop layout with optimized spacing
+  Widget _buildDesktopLayout(BuildContext context, PersonProvider provider) {
+    final person = provider.person!;
+
+    return Scaffold(
+      appBar: AppBar(title: Text(person.name)),
+      body: SingleChildScrollView(
+        child: Center(
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 1400),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Left side: Profile image
+                Expanded(
+                  flex: 2,
+                  child: Padding(
+                    padding: const EdgeInsets.all(24.0),
+                    child: PersonHeader(
+                      person: person,
+                      tag: widget.tag,
+                      isCompact: true,
+                    ),
+                  ),
+                ),
+                // Right side: All details
+                Expanded(
+                  flex: 3,
+                  child: Padding(
+                    padding: const EdgeInsets.all(24.0),
+                    child: _buildContentSections(context, provider),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  /// Build all content sections (reused across layouts)
+  Widget _buildContentSections(
+    BuildContext context,
+    PersonProvider provider,
+  ) {
+    final person = provider.person!;
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        // Known For Department
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          child: Text(
+            person.knownForDepartment,
+            style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                  fontStyle: FontStyle.italic,
+                  color: Theme.of(context).colorScheme.primary,
+                ),
+          ),
+        ),
+        const SizedBox(height: 24),
+
+        // Biography Section
+        PersonBiographySection(biography: person.biography),
+        const SizedBox(height: 32),
+
+        // Info Section (Birth, Death, Place of Birth)
+        PersonInfoSection(person: person),
+        const SizedBox(height: 32),
+
+        // Also Known As Section
+        if (person.alsoKnownAs.isNotEmpty) ...[
+          PersonAlsoKnownAsSection(names: person.alsoKnownAs),
+          const SizedBox(height: 32),
+        ],
+
+        // Filmography Section
+        PersonFilmographySection(
+          actingCredits: provider.actingCredits,
+          productionCredits: provider.productionCredits,
+          onMovieTap: (credit) => _navigateToMovie(context, credit),
+        ),
+        const SizedBox(height: 24),
+      ],
+    );
+  }
+
+  /// Navigate to movie detail screen
+  void _navigateToMovie(BuildContext context, dynamic credit) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => MovieDetailsScreen(
+          movieId: credit.id,
+          item: WatchlistItem(
+            id: credit.id,
+            title: credit.title,
+            posterPath: credit.posterPath ?? '',
+            mediaType: 'movie',
+            releaseDate: '',
+          ),
+        ),
+      ),
     );
   }
 }

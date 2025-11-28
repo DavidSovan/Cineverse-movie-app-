@@ -10,7 +10,7 @@ class DetailedMovie extends Movie {
   final String? status;
   final String? homepage;
   bool isFavorite = false;
-
+  
   DetailedMovie({
     required int id,
     required String title,
