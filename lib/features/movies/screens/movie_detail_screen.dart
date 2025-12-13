@@ -443,9 +443,61 @@ class MovieDetailsScreenState extends State<MovieDetailsScreen>
                                   '\$${_formatCurrency(movie.revenue!)}',
                                 ),
                               ],
+                              const SizedBox(height: 24),
+                              ElevatedButton.icon(
+                                onPressed: () async {
+                                  final streamUrl = Uri.parse(
+                                    'https://vidsrc.to/embed/movie/${movie.id}',
+                                  );
+                                  try {
+                                    if (await canLaunchUrl(streamUrl)) {
+                                      await launchUrl(
+                                        streamUrl,
+                                        mode: LaunchMode.externalApplication,
+                                      );
+                                    } else {
+                                      if (context.mounted) {
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
+                                          const SnackBar(
+                                            content: Text(
+                                              'Could not open streaming URL',
+                                            ),
+                                            backgroundColor: Colors.red,
+                                            duration: Duration(seconds: 2),
+                                          ),
+                                        );
+                                      }
+                                    }
+                                  } catch (e) {
+                                    if (context.mounted) {
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        SnackBar(
+                                          content: Text(
+                                            'Error opening stream: $e',
+                                          ),
+                                          backgroundColor: Colors.red,
+                                          duration: const Duration(seconds: 2),
+                                        ),
+                                      );
+                                    }
+                                  }
+                                },
+                                icon: const Icon(Icons.play_circle_filled),
+                                label: const Text('Watch Streaming'),
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: AppColors.primaryRed,
+                                  foregroundColor: Colors.white,
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 24,
+                                    vertical: 12,
+                                  ),
+                                ),
+                              ),
                               if (movie.homepage != null &&
                                   movie.homepage!.isNotEmpty) ...[
-                                const SizedBox(height: 24),
+                                const SizedBox(height: 16),
                                 ElevatedButton.icon(
                                   onPressed: () async {
                                     final url = Uri.parse(movie.homepage!);

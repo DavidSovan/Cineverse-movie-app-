@@ -1,2 +1,6 @@
 To use your API key in your code, you can access it like this:
 final apiKey = dotenv.env['API_KEY'];
+
+.env file
+API_KEY=74*******
+BASE_URL=https://api.themoviedb.org/3
