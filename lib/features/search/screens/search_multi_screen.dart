@@ -34,9 +34,12 @@ class SearchMultiScreen extends StatelessWidget {
                     prefixIcon: Icon(Icons.search),
                   ),
                   onChanged: (query) {
-                    if (query.length > 2) {
-                      provider.search(query);
-                    }
+                    // Live search without saving to history
+                    provider.liveSearch(query);
+                  },
+                  onSubmitted: (query) {
+                    // Confirmed search that saves to history
+                    provider.confirmedSearch(query);
                   },
                 ),
                 if (provider.searchHistory.isNotEmpty) ...[
@@ -57,7 +60,7 @@ class SearchMultiScreen extends StatelessWidget {
                     children: provider.searchHistory.map((query) {
                       return ActionChip(
                         label: Text(query),
-                        onPressed: () => provider.search(query),
+                        onPressed: () => provider.confirmedSearch(query),
                       );
                     }).toList(),
                   ),
@@ -76,7 +79,9 @@ class SearchMultiScreen extends StatelessWidget {
                             itemCount: provider.results.length,
                             itemBuilder: (context, index) {
                               return SearchResultItem(
-                                  result: provider.results[index]);
+                                  result: provider.results[index],
+                                  onResultTapped: (query) => provider.onResultTapped(query),
+                              );
                             },
                           ),
           ),

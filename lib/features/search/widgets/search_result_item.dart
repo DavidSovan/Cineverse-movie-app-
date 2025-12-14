@@ -6,8 +6,9 @@ import '../models/search_result.dart';
 
 class SearchResultItem extends StatelessWidget {
   final SearchResult result;
+  final Function(String)? onResultTapped;
 
-  const SearchResultItem({super.key, required this.result});
+  const SearchResultItem({super.key, required this.result, this.onResultTapped});
 
   @override
   Widget build(BuildContext context) {
@@ -23,6 +24,9 @@ class SearchResultItem extends StatelessWidget {
       subtitle: Text(
           '${result.mediaType.toUpperCase()} • ${result.releaseDate ?? 'N/A'}'),
       onTap: () {
+        // Save to search history when user taps a result
+        onResultTapped?.call(result.title);
+        
         if (result.mediaType == 'movie') {
           Navigator.push(
             context,
