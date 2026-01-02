@@ -78,6 +78,9 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   bool _isInitialLoading = true;
   String _loadingMessage = 'Welcome to Cineverse...';
+  bool _isDisposed = false;
+
+  bool get _isActive => mounted && !_isDisposed;
 
   @override
   void initState() {
@@ -85,52 +88,79 @@ class _HomeScreenState extends State<HomeScreen> {
     _initializeHomeScreen();
   }
 
+  @override
+  void dispose() {
+    _isDisposed = true;
+    super.dispose();
+  }
+
   Future<void> _initializeHomeScreen() async {
+    if (!_isActive) return;
+
+    // Capture providers before any async gaps to avoid using BuildContext later.
+    final movieProvider = context.read<MovieProvider>();
+    final genreProvider = context.read<GenreProvider>();
+
     try {
-      setState(() {
-        _loadingMessage = 'Welcome to Cineverse...';
-      });
+      if (_isActive) {
+        setState(() {
+          _loadingMessage = 'Welcome to Cineverse...';
+        });
+      }
       await Future.delayed(const Duration(milliseconds: 800));
+      if (!_isActive) return;
 
-      setState(() {
-        _loadingMessage = 'Loading trending movies...';
-      });
+      if (_isActive) {
+        setState(() {
+          _loadingMessage = 'Loading trending movies...';
+        });
+      }
 
-      if (mounted) {
+      if (_isActive) {
         await Future.wait([
-          context.read<MovieProvider>().fetchPopularMovies(),
+          movieProvider.fetchPopularMovies(),
           Future.delayed(const Duration(milliseconds: 500)),
         ]);
       }
+      if (!_isActive) return;
 
-      setState(() {
-        _loadingMessage = 'Setting up categories...';
-      });
+      if (_isActive) {
+        setState(() {
+          _loadingMessage = 'Setting up categories...';
+        });
+      }
 
-      if (mounted) {
+      if (_isActive) {
         await Future.wait([
-          context.read<GenreProvider>().fetchGenres(),
+          genreProvider.fetchGenres(),
           Future.delayed(const Duration(milliseconds: 500)),
         ]);
       }
+      if (!_isActive) return;
 
-      setState(() {
-        _loadingMessage = 'Almost ready...';
-      });
+      if (_isActive) {
+        setState(() {
+          _loadingMessage = 'Almost ready...';
+        });
+      }
       await Future.delayed(const Duration(milliseconds: 600));
+      if (!_isActive) return;
     } catch (error) {
-      setState(() {
-        _loadingMessage = 'Something went wrong. Retrying...';
-      });
+      if (_isActive) {
+        setState(() {
+          _loadingMessage = 'Something went wrong. Retrying...';
+        });
+      }
       await Future.delayed(const Duration(seconds: 1));
 
-      if (mounted) {
-        _initializeHomeScreen();
+      if (_isActive) {
+        await _initializeHomeScreen();
         return;
       }
+      return;
     }
 
-    if (mounted) {
+    if (_isActive) {
       setState(() {
         _isInitialLoading = false;
       });
@@ -156,16 +186,20 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void _showActionLoading(String message) {
-    setState(() {
-      _isInitialLoading = true;
-      _loadingMessage = message;
-    });
+    if (mounted) {
+      setState(() {
+        _isInitialLoading = true;
+        _loadingMessage = message;
+      });
+    }
   }
 
   void _hideLoading() {
-    setState(() {
-      _isInitialLoading = false;
-    });
+    if (mounted) {
+      setState(() {
+        _isInitialLoading = false;
+      });
+    }
   }
 
   @override
