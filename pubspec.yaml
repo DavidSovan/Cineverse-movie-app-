@@ -32,6 +32,7 @@ dependencies:
   internet_connection_checker: ^3.0.1
   intl: ^0.19.0
   webview_flutter: ^4.2.4
+  flutter_bakong_khqr: ^0.0.3
 
 dev_dependencies:
   flutter_test:

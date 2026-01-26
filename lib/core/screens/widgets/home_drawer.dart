@@ -1,6 +1,7 @@
 import 'package:cineverse/features/drawer/genre_provider.dart';
 import 'package:cineverse/features/drawer/genre_selection_screen.dart';
 import 'package:cineverse/features/drawer/watchlist_screen.dart';
+import 'package:cineverse/features/donation/donation_page.dart';
 import 'package:cineverse/features/movies/providers/movies_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -40,6 +41,21 @@ class HomeDrawer extends StatelessWidget {
                     context,
                     MaterialPageRoute(
                       builder: (context) => const WatchlistScreen(),
+                    ),
+                  );
+                },
+              ),
+              const Divider(),
+              // Donation item
+              ListTile(
+                leading: const Icon(Icons.favorite),
+                title: const Text('Support Us'),
+                onTap: () {
+                  Navigator.pop(context); // Close drawer
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const DonationPage(),
                     ),
                   );
                 },
