@@ -1,6 +1,7 @@
 import 'package:cineverse/core/screens/home_screen.dart';
 import 'package:cineverse/core/screens/splash_screen.dart';
 import 'package:cineverse/core/theme/theme_provider.dart';
+import 'package:cineverse/features/donation/donation_controller.dart';
 import 'package:cineverse/features/drawer/genre_provider.dart';
 import 'package:cineverse/features/drawer/watchlist_provider.dart';
 import 'package:cineverse/features/movies/providers/detail_movies_provider.dart';
@@ -23,7 +24,7 @@ import 'package:cineverse/core/theme/app_theme.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  
+
   // Load environment variables
   await dotenv.load(fileName: "assets/.env");
 
@@ -69,6 +70,8 @@ void main() async {
           ChangeNotifierProvider(create: (_) => SearchMultiProvider()),
           //WatchlistProvider
           ChangeNotifierProvider(create: (_) => WatchlistProvider()),
+          //DonationProvider
+          ChangeNotifierProvider(create: (_) => DonationViewModel()),
         ],
         child: const MyApp(),
       ),

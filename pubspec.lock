@@ -206,6 +206,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.0.3"
+  flutter_bakong_payway:
+    dependency: "direct main"
+    description:
+      name: flutter_bakong_payway
+      sha256: b23b93752552bfae7274a740a20b5eae7734726bacace6e4d3a7cec7e5a169c6
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.6"
   flutter_cache_manager:
     dependency: transitive
     description:
@@ -513,7 +521,7 @@ packages:
     source: hosted
     version: "3.0.2"
   qr_flutter:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: qr_flutter
       sha256: "5095f0fc6e3f71d08adef8feccc8cea4f12eec18a2e31c2e8d82cb6019f4b097"
