@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bakong_payway/flutter_bakong_payway.dart';
+import 'dart:async';
 
 class DonationViewModel extends ChangeNotifier {
   final FlutterBakongPayway _bakong = FlutterBakongPayway();
@@ -7,6 +8,9 @@ class DonationViewModel extends ChangeNotifier {
   /// State
   String? qrData;
   String? md5;
+  DateTime? qrGeneratedAt;
+  Timer? _qrTimer;
+  int? _qrRemainingSeconds;
   String? error;
   bool loading = false;
 
@@ -20,6 +24,8 @@ class DonationViewModel extends ChangeNotifier {
   DonationViewModel() {
     loadPlatform();
   }
+
+  int? get qrRemainingSeconds => _qrRemainingSeconds;
 
   Future<void> loadPlatform() async {
     try {
@@ -35,6 +41,21 @@ class DonationViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  void clearError() {
+    error = null;
+    notifyListeners();
+  }
+
+  void _clearQr() {
+    _qrTimer?.cancel();
+    _qrTimer = null;
+    qrData = null;
+    md5 = null;
+    qrGeneratedAt = null;
+    _qrRemainingSeconds = null;
+    notifyListeners();
+  }
+
   Future<void> generateQR() async {
     final amount = double.tryParse(amountController.text);
 
@@ -44,10 +65,14 @@ class DonationViewModel extends ChangeNotifier {
       return;
     }
 
+    _qrTimer?.cancel();
+    _qrTimer = null;
     loading = true;
     error = null;
     qrData = null;
     md5 = null;
+    qrGeneratedAt = null;
+    _qrRemainingSeconds = null;
     notifyListeners();
 
     try {
@@ -67,11 +92,30 @@ class DonationViewModel extends ChangeNotifier {
 
       qrData = result?.qr;
       md5 = result?.md5;
+      if (qrData != null) {
+        qrGeneratedAt = DateTime.now();
+        _qrRemainingSeconds = 30;
+        _qrTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
+          _qrRemainingSeconds = (_qrRemainingSeconds! - 1);
+          if (_qrRemainingSeconds! <= 0) {
+            _clearQr();
+          } else {
+            notifyListeners();
+          }
+        });
+      }
     } catch (e) {
       error = e.toString();
     } finally {
       loading = false;
       notifyListeners();
     }
+  }
+
+  @override
+  void dispose() {
+    _qrTimer?.cancel();
+    amountController.dispose();
+    super.dispose();
   }
 }
